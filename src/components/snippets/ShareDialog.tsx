@@ -110,7 +110,7 @@ export function ShareDialog({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md rounded-2xl">
         <DialogHeader>
           <DialogTitle>Share Snippet</DialogTitle>
           <DialogDescription>
@@ -129,12 +129,12 @@ export function ShareDialog({
               <Input
                 value={`${typeof window !== 'undefined' ? window.location.origin : ''}/s/${snippetId}`}
                 readOnly
-                className="flex-1 text-sm"
+                className="flex-1 text-sm rounded-xl"
               />
               <Button
                 onClick={handleCopyLink}
                 variant={linkCopied ? "default" : "outline"}
-                className={linkCopied ? 'bg-green-50 border-green-200 hover:bg-green-100' : ''}
+                className={`rounded-xl ${linkCopied ? 'bg-green-50 border-green-200 hover:bg-green-100' : ''}`}
               >
                 {linkCopied ? (
                   <>
@@ -182,9 +182,9 @@ export function ShareDialog({
               value={email}
               onChange={(e) => handleEmailChange(e.target.value)}
               disabled={shareSnippet.isPending}
-              className="flex-1"
+              className="flex-1 rounded-xl"
             />
-            <Button type="submit" disabled={shareSnippet.isPending}>
+            <Button type="submit" disabled={shareSnippet.isPending} className="rounded-xl">
               {shareSnippet.isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -198,7 +198,7 @@ export function ShareDialog({
 
           {/* Error message */}
           {error && (
-            <div className="text-sm text-red-600 bg-red-50 p-2 rounded-md">
+            <div className="text-sm text-red-600 bg-red-50 p-2 rounded-xl">
               {error}
             </div>
           )}
@@ -219,7 +219,7 @@ export function ShareDialog({
                 {sharedUsers.map((user) => (
                   <div
                     key={user.share_id}
-                    className="flex items-center justify-between p-2 rounded-md bg-neutral-50 border border-neutral-200"
+                    className="flex items-center justify-between p-2 rounded-xl bg-neutral-50 border border-neutral-200"
                   >
                     <div className="flex items-center gap-2 min-w-0 flex-1">
                       <div className="min-w-0 flex-1">
