@@ -2,7 +2,6 @@ import { createClient } from '../supabase/client'
 import { Database } from '../database.types'
 
 type Tag = Database['public']['Tables']['tags']['Row']
-type SnippetTag = Database['public']['Tables']['snippet_tags']['Row']
 
 /**
  * Get or create tags by name. Reuses existing tags and creates new ones as needed.
