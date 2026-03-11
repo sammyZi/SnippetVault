@@ -156,7 +156,7 @@ export function SnippetEditor({ initialData, onSubmit, onCancel, isLoading }: Sn
               <FormControl>
                 <Textarea
                   placeholder="Paste your code here"
-                  className="font-mono"
+                  className="font-mono custom-scrollbar"
                   rows={12}
                   {...field}
                 />

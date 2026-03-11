@@ -84,7 +84,7 @@ export function DashboardContent() {
       />
 
       <Dialog open={!!editingSnippet} onOpenChange={(open) => !open && setEditingSnippet(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
           <DialogHeader>
             <DialogTitle>Edit Snippet</DialogTitle>
             <DialogDescription>

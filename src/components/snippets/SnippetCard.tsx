@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Pencil, Trash2, MoreVertical } from 'lucide-react'
+import { Pencil, Trash2, MoreVertical, Users } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { SnippetWithTags } from '@/lib/services/snippets'
 import { ShareButton } from '@/components/snippets/ShareButton'
+import { ShareDialog } from '@/components/snippets/ShareDialog'
 
 interface SnippetCardProps {
   snippet: SnippetWithTags
@@ -69,6 +70,17 @@ export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
                 <Pencil className="mr-2 h-4 w-4" />
                 Edit
               </DropdownMenuItem>
+              {!snippet.is_public && (
+                <ShareDialog
+                  snippetId={snippet.id}
+                  trigger={
+                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                      <Users className="mr-2 h-4 w-4" />
+                      Share with users
+                    </DropdownMenuItem>
+                  }
+                />
+              )}
               <DropdownMenuItem
                 onClick={handleDelete}
                 disabled={isDeleting}
