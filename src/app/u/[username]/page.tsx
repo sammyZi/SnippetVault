@@ -66,3 +66,6 @@ export default async function PublicProfilePage({ params }: PageProps) {
     </div>
   )
 }
+
+// Enable ISR - revalidate every 60 seconds
+export const revalidate = 60

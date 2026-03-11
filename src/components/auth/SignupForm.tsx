@@ -43,8 +43,8 @@ export function SignupForm() {
       return
     }
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters')
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters')
       return
     }
 
@@ -184,7 +184,7 @@ export function SignupForm() {
                 placeholder="••••••••"
                 required
                 disabled={loading}
-                minLength={6}
+                minLength={8}
                 className="pl-10 pr-10 h-9 text-sm rounded-xl bg-neutral-50 border-neutral-300 focus:bg-white transition-all"
               />
               <button
@@ -212,7 +212,7 @@ export function SignupForm() {
                 placeholder="••••••••"
                 required
                 disabled={loading}
-                minLength={6}
+                minLength={8}
                 className="pl-10 pr-10 h-9 text-sm rounded-xl bg-neutral-50 border-neutral-300 focus:bg-white transition-all"
               />
               <button

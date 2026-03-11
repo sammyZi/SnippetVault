@@ -11,40 +11,35 @@ export interface SharedUser extends Profile {
 }
 
 /**
- * Share a snippet with a specific user by username or email
+ * Share a snippet with a specific user by email address
  * Requirements: 7.2
  */
 export async function shareWithUser(
   snippetId: string,
-  usernameOrEmail: string
+  email: string
 ): Promise<SnippetShare> {
   const supabase = createClient()
 
-  // Find the target user by username or email
-  let targetUserId: string | null = null
+  // Verify user is authenticated
+  const { data: { user: currentUser } } = await supabase.auth.getUser()
+  if (!currentUser) throw new Error('User not authenticated')
 
-  // Try to find by username first
-  const { data: profileByUsername } = await supabase
-    .from('profiles')
-    .select('id')
-    .eq('username', usernameOrEmail)
-    .single()
+  // Look up the target user by email using the database function
+  const { data: targetUserId, error: lookupError } = await supabase
+    .rpc('get_user_id_by_email', { user_email: email })
 
-  if (profileByUsername) {
-    targetUserId = profileByUsername.id
-  } else {
-    // Try to find by email in auth.users
-    const { data: { user: currentUser } } = await supabase.auth.getUser()
-    if (!currentUser) throw new Error('User not authenticated')
-
-    // Query auth.users through a function or use email lookup
-    // Since we can't directly query auth.users, we'll use the admin API pattern
-    // For now, we'll assume the username is provided
-    throw new Error('User not found. Please use username instead of email.')
+  if (lookupError) {
+    console.error('Email lookup error:', lookupError)
+    throw new Error('Failed to look up user')
   }
 
   if (!targetUserId) {
-    throw new Error('User not found')
+    throw new Error('No account found with that email')
+  }
+
+  // Prevent sharing with yourself
+  if (targetUserId === currentUser.id) {
+    throw new Error('You cannot share a snippet with yourself')
   }
 
   // Create the share record

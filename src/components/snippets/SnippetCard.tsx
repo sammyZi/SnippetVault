@@ -1,10 +1,18 @@
 'use client'
 
 import { useState } from 'react'
-import { Pencil, Trash2, MoreVertical, Users, Maximize2 } from 'lucide-react'
+import { Pencil, Trash2, MoreVertical, Users, Maximize2, Share2 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +20,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { SnippetWithTags } from '@/lib/services/snippets'
-import { ShareButton } from '@/components/snippets/ShareButton'
 import { ShareDialog } from '@/components/snippets/ShareDialog'
 import { SnippetDetailDialog } from '@/components/snippets/SnippetDetailDialog'
 import { ExportButton } from '@/components/snippets/ExportButton'
@@ -26,23 +33,34 @@ interface SnippetCardProps {
 export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [showDetailDialog, setShowDetailDialog] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   const handleDelete = async () => {
-    if (confirm('Are you sure you want to delete this snippet?')) {
-      setIsDeleting(true)
-      try {
-        await onDelete(snippet.id)
-      } catch (error) {
-        console.error('Failed to delete snippet:', error)
-        setIsDeleting(false)
-      }
+    setIsDeleting(true)
+    try {
+      await onDelete(snippet.id)
+    } catch (error) {
+      console.error('Failed to delete snippet:', error)
+      setIsDeleting(false)
     }
+    setShowDeleteConfirm(false)
   }
 
-  // Truncate code preview to first 5 lines
-  const codePreview = snippet.code.split('\n').slice(0, 5).join('\n')
-  const hasMoreLines = snippet.code.split('\n').length > 5
+  // Truncate code preview to first 3 lines
+  const codePreview = snippet.code.split('\n').slice(0, 3).join('\n')
+  const hasMoreLines = snippet.code.split('\n').length > 3
   const lineCount = snippet.code.split('\n').length
+
+  // Debug: Log snippet data to verify tags
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Snippet card data:', {
+      id: snippet.id,
+      title: snippet.title,
+      is_public: snippet.is_public,
+      tags: snippet.tags,
+      tagsCount: snippet.tags?.length || 0
+    })
+  }
 
   return (
     <>
@@ -79,19 +97,17 @@ export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
                   <Pencil className="mr-2 h-4 w-4" />
                   Edit
                 </DropdownMenuItem>
-                {!snippet.is_public && (
-                  <ShareDialog
-                    snippetId={snippet.id}
-                    trigger={
-                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                        <Users className="mr-2 h-4 w-4" />
-                        Share with users
-                      </DropdownMenuItem>
-                    }
-                  />
-                )}
+                <ShareDialog
+                  snippetId={snippet.id}
+                  trigger={
+                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                      <Share2 className="mr-2 h-4 w-4" />
+                      Share
+                    </DropdownMenuItem>
+                  }
+                />
                 <DropdownMenuItem
-                  onClick={handleDelete}
+                  onClick={() => setShowDeleteConfirm(true)}
                   disabled={isDeleting}
                   className="text-red-600 focus:text-red-600"
                 >
@@ -114,6 +130,16 @@ export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
               {lineCount} lines
             </span>
           </div>
+          {/* Display tags prominently in header */}
+          {snippet.tags && snippet.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-2">
+              {snippet.tags.map((tag) => (
+                <Badge key={tag.id} variant="secondary" className="text-xs rounded-full px-2.5 py-0.5 bg-blue-50 border-blue-200 text-blue-700">
+                  #{tag.name}
+                </Badge>
+              ))}
+            </div>
+          )}
         </CardHeader>
         <CardContent>
           <div 
@@ -140,22 +166,21 @@ export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
               </div>
             )}
           </div>
-          {snippet.tags && snippet.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-3">
-              {snippet.tags.map((tag) => (
-                <Badge key={tag.id} variant="secondary" className="text-xs rounded-full px-3 py-0.5">
-                  {tag.name}
-                </Badge>
-              ))}
-            </div>
-          )}
           <div className="mt-3 flex justify-end gap-2">
             <ExportButton
               snippetTitle={snippet.title}
               code={snippet.code}
               language={snippet.language}
             />
-            <ShareButton snippetId={snippet.id} />
+            <ShareDialog
+              snippetId={snippet.id}
+              trigger={
+                <Button variant="outline" size="sm" className="rounded-full gap-2">
+                  <Share2 className="h-4 w-4" />
+                  <span>Share</span>
+                </Button>
+              }
+            />
           </div>
         </CardContent>
       </Card>
@@ -165,6 +190,25 @@ export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
         open={showDetailDialog}
         onOpenChange={setShowDetailDialog}
       />
+
+      <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Delete Snippet</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete &quot;{snippet.title}&quot;? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button variant="outline" onClick={() => setShowDeleteConfirm(false)} disabled={isDeleting}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
+              {isDeleting ? 'Deleting...' : 'Delete'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }

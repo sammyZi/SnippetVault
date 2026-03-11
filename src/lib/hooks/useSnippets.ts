@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import {
   createSnippet,
   updateSnippet,
@@ -87,6 +88,12 @@ export function useCreateSnippet() {
           queryClient.setQueryData(queryKey, data)
         })
       }
+      toast.error('Failed to create snippet', {
+        description: err instanceof Error ? err.message : 'An error occurred'
+      })
+    },
+    onSuccess: () => {
+      toast.success('Snippet created successfully')
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.snippets.lists() })
@@ -141,6 +148,12 @@ export function useUpdateSnippet() {
     onError: (err, { id }, context) => {
       if (context?.previousSnippet) {
         queryClient.setQueryData(queryKeys.snippets.detail(id), context.previousSnippet)
+      toast.error('Failed to update snippet', {
+        description: err instanceof Error ? err.message : 'An error occurred'
+      })
+    },
+    onSuccess: () => {
+      toast.success('Snippet updated successfully')
       }
       if (context?.previousLists) {
         context.previousLists.forEach(([queryKey, data]) => {
@@ -175,6 +188,12 @@ export function useDeleteSnippet() {
 
       return { previousLists }
     },
+      toast.error('Failed to delete snippet', {
+        description: err instanceof Error ? err.message : 'An error occurred'
+      })
+    },
+    onSuccess: () => {
+      toast.success('Snippet deleted successfully')
     onError: (err, id, context) => {
       if (context?.previousLists) {
         context.previousLists.forEach(([queryKey, data]) => {

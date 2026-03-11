@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { SnippetView } from '@/components/snippets/SnippetView'
+import { Forbidden } from '@/components/ui/forbidden'
 import { Database } from '@/lib/database.types'
 
 type Snippet = Database['public']['Tables']['snippets']['Row']
@@ -42,17 +43,7 @@ export default async function PublicSnippetPage({ params }: PageProps) {
   if (!snippet.is_public) {
     // Not authenticated - show 403
     if (!user) {
-      return (
-        <div className="min-h-screen flex items-center justify-center p-4">
-          <div className="text-center max-w-md">
-            <h1 className="text-4xl font-bold mb-4">403</h1>
-            <h2 className="text-xl font-semibold mb-2">Access Denied</h2>
-            <p className="text-neutral-600">
-              This snippet is private. You need permission to view it.
-            </p>
-          </div>
-        </div>
-      )
+      return <Forbidden message="This snippet is private. You need permission to view it." />
     }
 
     // Check if user owns the snippet or has share permission
@@ -68,17 +59,7 @@ export default async function PublicSnippetPage({ params }: PageProps) {
         .single()
 
       if (!sharePermission) {
-        return (
-          <div className="min-h-screen flex items-center justify-center p-4">
-            <div className="text-center max-w-md">
-              <h1 className="text-4xl font-bold mb-4">403</h1>
-              <h2 className="text-xl font-semibold mb-2">Access Denied</h2>
-              <p className="text-neutral-600">
-                This snippet is private. You need permission to view it.
-              </p>
-            </div>
-          </div>
-        )
+        return <Forbidden message="This snippet is private. You need permission to view it." showLoginButton={false} />
       }
     }
   }

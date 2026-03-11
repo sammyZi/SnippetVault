@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { toast } from 'sonner'
 import { CreateSnippetButton } from './CreateSnippetButton'
 import { SnippetList } from './SnippetList'
 import { SnippetEditor } from './SnippetEditor'
@@ -23,11 +25,22 @@ import { useUIStore } from '@/lib/store/uiStore'
 export function DashboardContent() {
   const [editingSnippet, setEditingSnippet] = useState<SnippetWithTags | null>(null)
   const [showFilters, setShowFilters] = useState(false)
+  const searchParams = useSearchParams()
   const { data: snippets, isLoading } = useSnippets()
   const { searchQuery, languageFilter, tagFilter, visibilityFilter } = useUIStore()
   const updateSnippet = useUpdateSnippet()
   const deleteSnippet = useDeleteSnippet()
   const activeFilterCount = (languageFilter ? 1 : 0) + tagFilter.length + (visibilityFilter !== 'all' ? 1 : 0)
+
+  useEffect(() => {
+    if (searchParams.get('welcome') === 'true') {
+      toast.success('Welcome to SnippetVault!', {
+        description: 'Start by creating your first snippet.',
+      })
+      // Clean URL without reload
+      window.history.replaceState({}, '', '/dashboard')
+    }
+  }, [searchParams])
 
   const handleEdit = (snippet: SnippetWithTags) => {
     setEditingSnippet(snippet)

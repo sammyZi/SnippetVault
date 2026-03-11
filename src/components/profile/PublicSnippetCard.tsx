@@ -17,9 +17,9 @@ interface PublicSnippetCardProps {
 }
 
 export function PublicSnippetCard({ snippet }: PublicSnippetCardProps) {
-  // Truncate code preview to first 5 lines
-  const codePreview = snippet.code.split('\n').slice(0, 5).join('\n')
-  const hasMoreLines = snippet.code.split('\n').length > 5
+  // Truncate code preview to first 3 lines
+  const codePreview = snippet.code.split('\n').slice(0, 3).join('\n')
+  const hasMoreLines = snippet.code.split('\n').length > 3
 
   return (
     <Link href={`/s/${snippet.id}`}>
@@ -38,7 +38,7 @@ export function PublicSnippetCard({ snippet }: PublicSnippetCardProps) {
             </div>
           </div>
           <div className="flex items-center gap-2 mt-2">
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-xs rounded-full px-3 py-0.5">
               {snippet.language}
             </Badge>
           </div>
@@ -55,7 +55,7 @@ export function PublicSnippetCard({ snippet }: PublicSnippetCardProps) {
           {snippet.tags && snippet.tags.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-3">
               {snippet.tags.map((tag) => (
-                <Badge key={tag.id} variant="secondary" className="text-xs">
+                <Badge key={tag.id} variant="secondary" className="text-xs rounded-full px-3 py-0.5">
                   {tag.name}
                 </Badge>
               ))}

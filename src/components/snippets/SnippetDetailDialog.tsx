@@ -11,6 +11,9 @@ import { Badge } from '@/components/ui/badge'
 import { SyntaxHighlighter } from './SyntaxHighlighter'
 import { SnippetWithTags } from '@/lib/services/snippets'
 import { ShareButton } from './ShareButton'
+import { ShareDialog } from './ShareDialog'
+import { ExportButton } from './ExportButton'
+import { Button } from '@/components/ui/button'
 
 interface SnippetDetailDialogProps {
   snippet: SnippetWithTags
@@ -74,14 +77,34 @@ export function SnippetDetailDialog({ snippet, open, onOpenChange }: SnippetDeta
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-neutral-200 bg-neutral-50 flex items-center justify-between">
-          <div className="text-xs text-neutral-500">
-            Created {new Date(snippet.created_at).toLocaleDateString()}
-            {snippet.updated_at !== snippet.created_at && (
-              <> · Updated {new Date(snippet.updated_at).toLocaleDateString()}</>
-            )}
+        <div className="px-6 py-4 border-t border-neutral-200 bg-neutral-50">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="text-xs text-neutral-500">
+              Created {new Date(snippet.created_at).toLocaleDateString()}
+              {snippet.updated_at !== snippet.created_at && (
+                <> · Updated {new Date(snippet.updated_at).toLocaleDateString()}</>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <ExportButton
+                snippetTitle={snippet.title}
+                code={snippet.code}
+                language={snippet.language}
+                size="sm"
+              />
+              <ShareButton snippetId={snippet.id} />
+              {!snippet.is_public && (
+                <ShareDialog
+                  snippetId={snippet.id}
+                  trigger={
+                    <Button variant="outline" size="sm">
+                      Share with users
+                    </Button>
+                  }
+                />
+              )}
+            </div>
           </div>
-          <ShareButton snippetId={snippet.id} />
         </div>
       </DialogContent>
     </Dialog>

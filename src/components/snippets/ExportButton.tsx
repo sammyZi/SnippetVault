@@ -137,6 +137,20 @@ export function ExportButton({
             {code}
           </SyntaxHighlighterLib>
         </div>
+
+        {/* Watermark */}
+        <div
+          style={{
+            marginTop: '16px',
+            textAlign: 'right',
+            color: '#6b7280',
+            fontSize: '12px',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+            opacity: 0.7,
+          }}
+        >
+          SnippetVault
+        </div>
       </div>
     </>
   );

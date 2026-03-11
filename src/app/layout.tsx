@@ -3,6 +3,7 @@ import "./globals.css";
 import { Comic_Neue } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { QueryProvider } from "@/components/providers/QueryProvider";
+import { Toaster } from "sonner";
 
 const comicNeue = Comic_Neue({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body className={cn("antialiased", comicNeue.className)}>
         <QueryProvider>
           {children}
+          <Toaster richColors position="top-right" />
         </QueryProvider>
       </body>
     </html>

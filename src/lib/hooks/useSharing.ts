@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import {
   shareWithUser,
   revokeShare,
@@ -46,6 +47,12 @@ export function useShareSnippet() {
       queryClient.invalidateQueries({
         queryKey: sharingQueryKeys.sharedUsers(variables.snippetId),
       })
+      toast.success('Snippet shared successfully')
+    },
+    onError: (err) => {
+      toast.error('Failed to share snippet', {
+        description: err instanceof Error ? err.message : 'An error occurred'
+      })
     },
   })
 }
@@ -63,6 +70,12 @@ export function useRevokeShare() {
       // Invalidate the shared users list for this snippet
       queryClient.invalidateQueries({
         queryKey: sharingQueryKeys.sharedUsers(variables.snippetId),
+      })
+      toast.success('Access revoked successfully')
+    },
+    onError: (err) => {
+      toast.error('Failed to revoke access', {
+        description: err instanceof Error ? err.message : 'An error occurred'
       })
     },
   })

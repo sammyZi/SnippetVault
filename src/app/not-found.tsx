@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { UserX, Home } from 'lucide-react'
+import { FileQuestion, Home } from 'lucide-react'
 
 export default function NotFound() {
   return (
@@ -14,12 +14,12 @@ export default function NotFound() {
       
       <div className="text-center max-w-md relative z-10">
         <div className="w-24 h-24 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-bounce">
-          <UserX className="w-12 h-12 text-white" />
+          <FileQuestion className="w-12 h-12 text-white" />
         </div>
         <h1 className="text-7xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">404</h1>
-        <h2 className="text-2xl font-semibold mb-3 text-neutral-800">User Not Found</h2>
+        <h2 className="text-2xl font-semibold mb-3 text-neutral-800">Page Not Found</h2>
         <p className="text-neutral-600 mb-8 leading-relaxed">
-          The username you're looking for doesn't exist.
+          The page you're looking for doesn't exist or has been moved.
         </p>
         <Link href="/dashboard">
           <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg hover:shadow-xl transition-all duration-200">

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Users, X, Loader2 } from 'lucide-react'
+import { Users, X, Loader2, Copy, Check, Link2 } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -26,28 +26,54 @@ interface ShareDialogProps {
  */
 export function ShareDialog({ snippetId, trigger }: ShareDialogProps) {
   const [open, setOpen] = useState(false)
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [linkCopied, setLinkCopied] = useState(false)
 
   const { data: sharedUsers = [], isLoading: isLoadingUsers } = useSharedUsers(snippetId)
   const shareSnippet = useShareSnippet()
   const revokeShare = useRevokeShare()
 
+  // Copy public link to clipboard
+  const handleCopyLink = async () => {
+    try {
+      const shareUrl = `${window.location.origin}/s/${snippetId}`
+      await navigator.clipboard.writeText(shareUrl)
+      setLinkCopied(true)
+      setTimeout(() => setLinkCopied(false), 2000)
+    } catch (err) {
+      setError('Failed to copy link')
+    }
+  }
+
+  // Clear error and success messages when user starts typing
+  const handleEmailChange = (value: string) => {
+    setEmail(value)
+    if (error) setError(null)
+  }
+
   const handleShare = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
 
-    if (!username.trim()) {
-      setError('Please enter a username')
+    if (!email.trim()) {
+      setError('Please enter an email address')
+      return
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email.trim())) {
+      setError('Please enter a valid email address')
       return
     }
 
     try {
       await shareSnippet.mutateAsync({
         snippetId,
-        usernameOrEmail: username.trim(),
+        usernameOrEmail: email.trim(),
       })
-      setUsername('')
+      setEmail('')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to share snippet')
     }
@@ -75,17 +101,60 @@ export function ShareDialog({ snippetId, trigger }: ShareDialogProps) {
         <DialogHeader>
           <DialogTitle>Share Snippet</DialogTitle>
           <DialogDescription>
-            Share this private snippet with specific users by entering their username.
+            Copy the public link or share with specific users by email.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
+          {/* Copy public link section */}
+          <div className="space-y-2">
+            <h4 className="text-sm font-medium flex items-center gap-2">
+              <Link2 className="h-4 w-4" />
+              Public Link
+            </h4>
+            <div className="flex gap-2">
+              <Input
+                value={`${typeof window !== 'undefined' ? window.location.origin : ''}/s/${snippetId}`}
+                readOnly
+                className="flex-1 text-sm"
+              />
+              <Button
+                onClick={handleCopyLink}
+                variant={linkCopied ? "default" : "outline"}
+                className={linkCopied ? 'bg-green-50 border-green-200 hover:bg-green-100' : ''}
+              >
+                {linkCopied ? (
+                  <>
+                    <Check className="h-4 w-4 mr-2 text-green-600" />
+                    <span className="text-green-600">Copied</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-4 w-4 mr-2" />
+                    Copy
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-white px-2 text-neutral-500">Or share with users</span>
+            </div>
+          </div>
+
           {/* Share form */}
           <form onSubmit={handleShare} className="flex gap-2">
             <Input
-              placeholder="Enter username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              placeholder="Enter email address"
+              value={email}
+              onChange={(e) => handleEmailChange(e.target.value)}
               disabled={shareSnippet.isPending}
               className="flex-1"
             />
