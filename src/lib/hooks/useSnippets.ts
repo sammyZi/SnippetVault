@@ -36,6 +36,8 @@ export function useSnippets(filters?: SnippetFilters) {
   return useQuery({
     queryKey: queryKeys.snippets.list(mergedFilters),
     queryFn: () => getUserSnippets(mergedFilters),
+    initialData: [], // Start with empty array to prevent loading skeleton flash
+    staleTime: 0, // Always refetch to get latest data
   })
 }
 

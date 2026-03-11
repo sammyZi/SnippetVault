@@ -63,29 +63,29 @@ export function FilterPanel() {
   const hasActiveFilters = languageFilter || tagFilter.length > 0 || visibilityFilter !== 'all'
 
   return (
-    <div className="space-y-4 p-6 bg-white rounded-lg border border-neutral-200 shadow-sm">
+    <div className="space-y-3 p-4 bg-white rounded-lg border border-neutral-200 shadow-sm">
       <div className="flex items-center justify-between">
-        <h3 className="text-base font-semibold text-neutral-900">Filters</h3>
+        <h3 className="text-sm font-semibold text-neutral-900">Filters</h3>
         {hasActiveFilters && (
           <Button
             variant="ghost"
             size="sm"
             onClick={handleClearFilters}
-            className="h-8 text-xs hover:bg-neutral-100"
+            className="h-7 text-xs hover:bg-neutral-100 px-2"
           >
-            Clear all
+            Clear
           </Button>
         )}
       </div>
 
       {/* Language Filter */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-neutral-700">Language</label>
+      <div className="space-y-1.5">
+        <label className="text-xs font-medium text-neutral-700">Language</label>
         <Select
           value={languageFilter || 'all'}
           onValueChange={(value) => setLanguageFilter(value === 'all' ? null : value)}
         >
-          <SelectTrigger className="h-10">
+          <SelectTrigger className="h-9 text-sm">
             <SelectValue placeholder="All languages" />
           </SelectTrigger>
           <SelectContent>
@@ -100,15 +100,15 @@ export function FilterPanel() {
       </div>
 
       {/* Visibility Filter */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-neutral-700">Visibility</label>
+      <div className="space-y-1.5">
+        <label className="text-xs font-medium text-neutral-700">Visibility</label>
         <Select
           value={visibilityFilter}
           onValueChange={(value) =>
             setVisibilityFilter(value as 'all' | 'public' | 'private')
           }
         >
-          <SelectTrigger className="h-10">
+          <SelectTrigger className="h-9 text-sm">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -121,20 +121,20 @@ export function FilterPanel() {
 
       {/* Tag Filter */}
       {allTags && allTags.length > 0 && (
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-neutral-700">Tags</label>
-          <div className="flex flex-wrap gap-2">
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium text-neutral-700">Tags</label>
+          <div className="flex flex-wrap gap-1.5">
             {allTags.map((tag) => {
               const isSelected = tagFilter.includes(tag.name)
               return (
                 <Badge
                   key={tag.id}
                   variant={isSelected ? 'default' : 'outline'}
-                  className="cursor-pointer hover:bg-neutral-100 transition-colors"
+                  className="cursor-pointer hover:bg-neutral-100 transition-colors text-xs py-0.5 px-2"
                   onClick={() => handleTagToggle(tag.name)}
                 >
                   {tag.name}
-                  {isSelected && <X className="ml-1 h-3 w-3" />}
+                  {isSelected && <X className="ml-1 h-2.5 w-2.5" />}
                 </Badge>
               )
             })}
