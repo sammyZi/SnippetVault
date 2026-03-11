@@ -148,18 +148,18 @@ export function useUpdateSnippet() {
     onError: (err, { id }, context) => {
       if (context?.previousSnippet) {
         queryClient.setQueryData(queryKeys.snippets.detail(id), context.previousSnippet)
-      toast.error('Failed to update snippet', {
-        description: err instanceof Error ? err.message : 'An error occurred'
-      })
-    },
-    onSuccess: () => {
-      toast.success('Snippet updated successfully')
       }
       if (context?.previousLists) {
         context.previousLists.forEach(([queryKey, data]) => {
           queryClient.setQueryData(queryKey, data)
         })
       }
+      toast.error('Failed to update snippet', {
+        description: err instanceof Error ? err.message : 'An error occurred'
+      })
+    },
+    onSuccess: () => {
+      toast.success('Snippet updated successfully')
     },
     onSettled: (data, error, { id }) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.snippets.detail(id) })
