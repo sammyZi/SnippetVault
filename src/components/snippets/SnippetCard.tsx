@@ -99,6 +99,9 @@ export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
                 </DropdownMenuItem>
                 <ShareDialog
                   snippetId={snippet.id}
+                  snippetTitle={snippet.title}
+                  snippetCode={snippet.code}
+                  snippetLanguage={snippet.language}
                   trigger={
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                       <Share2 className="mr-2 h-4 w-4" />

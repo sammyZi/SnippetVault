@@ -188,18 +188,18 @@ export function useDeleteSnippet() {
 
       return { previousLists }
     },
-      toast.error('Failed to delete snippet', {
-        description: err instanceof Error ? err.message : 'An error occurred'
-      })
-    },
-    onSuccess: () => {
-      toast.success('Snippet deleted successfully')
     onError: (err, id, context) => {
       if (context?.previousLists) {
         context.previousLists.forEach(([queryKey, data]) => {
           queryClient.setQueryData(queryKey, data)
         })
       }
+      toast.error('Failed to delete snippet', {
+        description: err instanceof Error ? err.message : 'An error occurred'
+      })
+    },
+    onSuccess: () => {
+      toast.success('Snippet deleted successfully')
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.snippets.lists() })

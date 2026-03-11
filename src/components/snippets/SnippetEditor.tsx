@@ -102,6 +102,8 @@ export function SnippetEditor({ initialData, onSubmit, onCancel, isLoading }: Sn
   }, [initialData, form])
 
   const handleFormSubmit = (values: SnippetFormValues) => {
+    console.log('📝 SnippetEditor - Form submitted with values:', values)
+    console.log('📝 SnippetEditor - Tags from form:', values.tags)
     onSubmit({
       title: values.title.trim(),
       description: values.description?.trim() || undefined,

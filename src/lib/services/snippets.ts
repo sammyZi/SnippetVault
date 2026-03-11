@@ -67,9 +67,15 @@ export async function createSnippet(data: CreateSnippetInput): Promise<Snippet> 
   }
 
   // Handle tags if provided
+  console.log('🏷️ createSnippet - Tags received:', data.tags)
   if (data.tags && data.tags.length > 0) {
+    console.log('🏷️ createSnippet - Processing tags:', data.tags)
     const tags = await getOrCreateTags(data.tags)
+    console.log('🏷️ createSnippet - Tags created/fetched:', tags)
     await assignTags(snippet.id, tags.map(tag => tag.id))
+    console.log('🏷️ createSnippet - Tags assigned to snippet:', snippet.id)
+  } else {
+    console.log('🏷️ createSnippet - No tags provided or empty array')
   }
 
   return snippet

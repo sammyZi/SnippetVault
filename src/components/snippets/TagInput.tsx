@@ -41,11 +41,17 @@ export function TagInput({ value, onChange, placeholder = 'Add tags...' }: TagIn
 
   const addTag = (tagName: string) => {
     const trimmedTag = tagName.trim().toLowerCase()
+    console.log('🏷️ TagInput - Adding tag:', trimmedTag)
+    console.log('🏷️ TagInput - Current value:', value)
     if (trimmedTag && !value.includes(trimmedTag)) {
-      onChange([...value, trimmedTag])
+      const newTags = [...value, trimmedTag]
+      console.log('🏷️ TagInput - Calling onChange with:', newTags)
+      onChange(newTags)
       setInputValue('')
       setShowSuggestions(false)
       inputRef.current?.focus()
+    } else {
+      console.log('🏷️ TagInput - Tag not added (empty or duplicate)')
     }
   }
 
@@ -91,17 +97,29 @@ export function TagInput({ value, onChange, placeholder = 'Add tags...' }: TagIn
   return (
     <div className="space-y-2">
       <div className="relative">
-        <Input
-          ref={inputRef}
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          onFocus={() => inputValue.trim() && setShowSuggestions(true)}
-          onBlur={handleBlur}
-          placeholder={placeholder}
-          className="w-full"
-        />
+        <div className="relative">
+          <Input
+            ref={inputRef}
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            onFocus={() => inputValue.trim() && setShowSuggestions(true)}
+            onBlur={handleBlur}
+            placeholder={placeholder}
+            className="w-full pr-20"
+          />
+          {inputValue.trim() && (
+            <button
+              type="button"
+              onClick={() => addTag(inputValue)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 text-xs font-medium text-primary-600 hover:text-primary-700 bg-primary-50 hover:bg-primary-100 rounded-md transition-colors"
+            >
+              Add
+            </button>
+          )}
+        </div>
+        <p className="text-xs text-neutral-500 mt-1">Press Enter or click Add to create tag</p>
         
         {showSuggestions && suggestions.length > 0 && (
           <div

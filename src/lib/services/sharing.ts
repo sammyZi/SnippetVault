@@ -30,16 +30,41 @@ export async function shareWithUser(
 
   if (lookupError) {
     console.error('Email lookup error:', lookupError)
-    throw new Error('Failed to look up user')
+    throw new Error(`Failed to look up user: ${lookupError.message}`)
   }
 
   if (!targetUserId) {
-    throw new Error('No account found with that email')
+    throw new Error('No account found with that email address')
   }
 
   // Prevent sharing with yourself
   if (targetUserId === currentUser.id) {
     throw new Error('You cannot share a snippet with yourself')
+  }
+
+  // Verify the snippet exists and current user owns it
+  const { data: snippet, error: snippetError } = await supabase
+    .from('snippets')
+    .select('id, user_id')
+    .eq('id', snippetId)
+    .single()
+
+  if (snippetError) {
+    console.error('Snippet lookup error:', snippetError)
+    console.error('Snippet ID:', snippetId)
+    throw new Error(`Failed to find snippet: ${snippetError.message}`)
+  }
+
+  if (!snippet) {
+    throw new Error('Snippet not found')
+  }
+
+  console.log('Snippet found:', snippet)
+  console.log('Current user:', currentUser.id)
+  console.log('Snippet owner:', snippet.user_id)
+
+  if (snippet.user_id !== currentUser.id) {
+    throw new Error('You do not own this snippet')
   }
 
   // Create the share record
@@ -48,6 +73,8 @@ export async function shareWithUser(
     shared_with_user_id: targetUserId,
   }
 
+  console.log('Attempting to insert share:', shareData)
+
   const { data: share, error } = await supabase
     .from('snippet_shares')
     .insert(shareData)
@@ -55,12 +82,31 @@ export async function shareWithUser(
     .single()
 
   if (error) {
+    console.error('Share insert error:', JSON.stringify(error, null, 2))
+    console.error('Share data:', shareData)
+    console.error('Current user ID:', currentUser.id)
+    console.error('Snippet ID:', snippetId)
+    console.error('Target user ID:', targetUserId)
+    console.error('Error keys:', Object.keys(error))
+    
     if (error.code === '23505') {
-      throw new Error('Snippet is already shared with this user')
+      throw new Error('This snippet is already shared with that user')
     }
-    throw error
+    
+    // Check for RLS policy violation
+    if (error.code === '42501' || error.message?.includes('policy')) {
+      throw new Error('Permission denied. Make sure you own this snippet.')
+    }
+    
+    // Check for empty error object (common RLS issue)
+    if (!error.message && !error.code) {
+      throw new Error('Permission denied. Database policies may be blocking this action. Please check that:\n1. You own this snippet\n2. The database migrations have been applied\n3. RLS policies are configured correctly')
+    }
+    
+    throw new Error(`Failed to share snippet: ${error.message || error.hint || 'Unknown error'}`)
   }
 
+  console.log('Share created successfully:', share)
   return share
 }
 

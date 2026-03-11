@@ -13,10 +13,14 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
+import { ExportButton } from './ExportButton'
 import { useSharedUsers, useShareSnippet, useRevokeShare } from '@/lib/hooks/useSharing'
 
 interface ShareDialogProps {
   snippetId: string
+  snippetTitle?: string
+  snippetCode?: string
+  snippetLanguage?: string
   trigger?: React.ReactNode
 }
 
@@ -24,7 +28,13 @@ interface ShareDialogProps {
  * ShareDialog component for managing user-specific snippet sharing
  * Requirements: 7.1, 7.3, 7.4
  */
-export function ShareDialog({ snippetId, trigger }: ShareDialogProps) {
+export function ShareDialog({ 
+  snippetId, 
+  snippetTitle = 'snippet',
+  snippetCode = '',
+  snippetLanguage = 'javascript',
+  trigger 
+}: ShareDialogProps) {
   const [open, setOpen] = useState(false)
   const [email, setEmail] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -74,8 +84,11 @@ export function ShareDialog({ snippetId, trigger }: ShareDialogProps) {
         usernameOrEmail: email.trim(),
       })
       setEmail('')
+      setError(null) // Clear any existing errors on success
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to share snippet')
+      // Error is already shown via toast in the hook
+      // Just log it for debugging
+      console.error('Share error:', err)
     }
   }
 
@@ -138,6 +151,19 @@ export function ShareDialog({ snippetId, trigger }: ShareDialogProps) {
             </div>
           </div>
 
+          {/* Export as Image button */}
+          {snippetCode && (
+            <div className="space-y-2">
+              <ExportButton
+                snippetTitle={snippetTitle}
+                code={snippetCode}
+                language={snippetLanguage}
+                variant="outline"
+                size="default"
+              />
+            </div>
+          )}
+
           {/* Divider */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -174,13 +200,6 @@ export function ShareDialog({ snippetId, trigger }: ShareDialogProps) {
           {error && (
             <div className="text-sm text-red-600 bg-red-50 p-2 rounded-md">
               {error}
-            </div>
-          )}
-
-          {/* Success message */}
-          {shareSnippet.isSuccess && !error && (
-            <div className="text-sm text-green-600 bg-green-50 p-2 rounded-md">
-              Snippet shared successfully!
             </div>
           )}
 

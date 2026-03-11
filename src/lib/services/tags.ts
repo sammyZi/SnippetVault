@@ -8,12 +8,15 @@ type Tag = Database['public']['Tables']['tags']['Row']
  * Validates: Requirements 20.2, 20.3
  */
 export async function getOrCreateTags(tagNames: string[]): Promise<Tag[]> {
+  console.log('🏷️ getOrCreateTags - Input:', tagNames)
   if (tagNames.length === 0) return []
 
   const supabase = createClient()
   const normalizedNames = tagNames
     .map(name => name.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, ''))
     .filter(name => name.length > 0)
+  
+  console.log('🏷️ getOrCreateTags - Normalized names:', normalizedNames)
 
   // First, try to get existing tags
   const { data: existingTags, error: fetchError } = await supabase
@@ -31,19 +34,22 @@ export async function getOrCreateTags(tagNames: string[]): Promise<Tag[]> {
 
   // Create new tags if needed
   if (newTagNames.length > 0) {
+    console.log('🏷️ getOrCreateTags - Creating new tags:', newTagNames)
     const { data: newTags, error: insertError } = await supabase
       .from('tags')
       .insert(newTagNames.map(name => ({ name })))
       .select()
 
     if (insertError) {
-      console.error('Error inserting tags:', insertError)
+      console.error('❌ Error inserting tags:', insertError)
       throw new Error(`Failed to create tags: ${insertError.message}`)
     }
 
+    console.log('✅ getOrCreateTags - New tags created:', newTags)
     return [...(existingTags || []), ...(newTags || [])]
   }
 
+  console.log('✅ getOrCreateTags - Returning existing tags:', existingTags)
   return existingTags || []
 }
 
@@ -52,6 +58,7 @@ export async function getOrCreateTags(tagNames: string[]): Promise<Tag[]> {
  * Validates: Requirements 20.1, 20.4
  */
 export async function assignTags(snippetId: string, tagIds: string[]): Promise<void> {
+  console.log('🏷️ assignTags - Snippet ID:', snippetId, 'Tag IDs:', tagIds)
   const supabase = createClient()
 
   // Remove existing tag associations
@@ -67,14 +74,17 @@ export async function assignTags(snippetId: string, tagIds: string[]): Promise<v
 
   // Create new tag associations
   if (tagIds.length > 0) {
+    const insertData = tagIds.map(tagId => ({ snippet_id: snippetId, tag_id: tagId }))
+    console.log('🏷️ assignTags - Inserting snippet_tags:', insertData)
     const { error: insertError } = await supabase
       .from('snippet_tags')
-      .insert(tagIds.map(tagId => ({ snippet_id: snippetId, tag_id: tagId })))
+      .insert(insertData)
 
     if (insertError) {
-      console.error('Error inserting snippet_tags:', insertError)
+      console.error('❌ Error inserting snippet_tags:', insertError)
       throw new Error(`Failed to assign tags: ${insertError.message}`)
     }
+    console.log('✅ assignTags - Tags assigned successfully')
   }
 }
 

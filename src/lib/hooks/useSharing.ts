@@ -50,8 +50,10 @@ export function useShareSnippet() {
       toast.success('Snippet shared successfully')
     },
     onError: (err) => {
+      // Show the actual error message from the server
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred'
       toast.error('Failed to share snippet', {
-        description: err instanceof Error ? err.message : 'An error occurred'
+        description: errorMessage
       })
     },
   })
