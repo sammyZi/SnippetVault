@@ -6,6 +6,9 @@ import { SnippetList } from './SnippetList'
 import { SnippetEditor } from './SnippetEditor'
 import { SearchBar } from './SearchBar'
 import { FilterPanel } from './FilterPanel'
+import { Filter } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import {
   Dialog,
   DialogContent,
@@ -15,12 +18,16 @@ import {
 } from '@/components/ui/dialog'
 import { useSnippets, useUpdateSnippet, useDeleteSnippet } from '@/lib/hooks/useSnippets'
 import { SnippetWithTags, UpdateSnippetInput, CreateSnippetInput } from '@/lib/services/snippets'
+import { useUIStore } from '@/lib/store/uiStore'
 
 export function DashboardContent() {
   const [editingSnippet, setEditingSnippet] = useState<SnippetWithTags | null>(null)
+  const [showFilters, setShowFilters] = useState(false)
   const { data: snippets, isLoading } = useSnippets()
+  const { searchQuery, languageFilter, tagFilter, visibilityFilter } = useUIStore()
   const updateSnippet = useUpdateSnippet()
   const deleteSnippet = useDeleteSnippet()
+  const activeFilterCount = (languageFilter ? 1 : 0) + tagFilter.length + (visibilityFilter !== 'all' ? 1 : 0)
 
   const handleEdit = (snippet: SnippetWithTags) => {
     setEditingSnippet(snippet)
@@ -64,23 +71,36 @@ export function DashboardContent() {
         <CreateSnippetButton />
       </div>
 
-      {/* Search and Filter Section - Only show if there are snippets */}
-      {snippets && snippets.length > 0 && (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
-          <div className="lg:col-span-3">
+      {/* Search & Filter Section */}
+      <div className="mb-6 space-y-4">
+        <div className="flex items-center justify-center gap-3">
+          <div className="w-full max-w-md">
             <SearchBar />
           </div>
-          <div className="lg:col-span-1">
-            <FilterPanel />
-          </div>
+          <Button
+            variant={showFilters ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setShowFilters(!showFilters)}
+            className="h-9 rounded-lg gap-2 shrink-0"
+          >
+            <Filter className="h-4 w-4" />
+            Filters
+            {activeFilterCount > 0 && (
+              <Badge variant={showFilters ? 'secondary' : 'default'} className="h-5 px-1.5 text-xs ml-0.5">
+                {activeFilterCount}
+              </Badge>
+            )}
+          </Button>
         </div>
-      )}
+        {showFilters && <FilterPanel />}
+      </div>
 
       <SnippetList
         snippets={snippets || []}
         onEdit={handleEdit}
         onDelete={handleDelete}
         isLoading={isLoading}
+        hasActiveSearch={!!searchQuery}
       />
 
       <Dialog open={!!editingSnippet} onOpenChange={(open) => !open && setEditingSnippet(null)}>

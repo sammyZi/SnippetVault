@@ -1,5 +1,6 @@
 'use client'
 
+import { Search } from 'lucide-react'
 import { SnippetCard } from './SnippetCard'
 import { SnippetWithTags } from '@/lib/services/snippets'
 
@@ -8,9 +9,10 @@ interface SnippetListProps {
   onEdit: (snippet: SnippetWithTags) => void
   onDelete: (id: string) => void
   isLoading?: boolean
+  hasActiveSearch?: boolean
 }
 
-export function SnippetList({ snippets, onEdit, onDelete, isLoading }: SnippetListProps) {
+export function SnippetList({ snippets, onEdit, onDelete, isLoading, hasActiveSearch }: SnippetListProps) {
   // If we have snippets, show them (even if still loading for updates)
   if (snippets.length > 0) {
     return (
@@ -42,6 +44,24 @@ export function SnippetList({ snippets, onEdit, onDelete, isLoading }: SnippetLi
   }
 
   // Not loading and no snippets = empty state
+  if (hasActiveSearch) {
+    return (
+      <div className="text-center py-16 px-4">
+        <div className="max-w-md mx-auto">
+          <div className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Search className="w-8 h-8 text-neutral-400" />
+          </div>
+          <h3 className="text-lg font-semibold text-neutral-900 mb-2">
+            No results found
+          </h3>
+          <p className="text-neutral-500 text-sm">
+            Try adjusting your search or filters to find what you&apos;re looking for.
+          </p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="text-center py-16 px-4">
       <div className="max-w-md mx-auto">

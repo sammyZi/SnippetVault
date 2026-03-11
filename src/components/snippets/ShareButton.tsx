@@ -58,7 +58,7 @@ export function ShareButton({
       onClick={handleShare}
       size={size}
       variant={variant}
-      className={shareState === 'success' ? 'bg-green-50 border-green-200 hover:bg-green-100' : shareState === 'error' ? 'bg-red-50 border-red-200 hover:bg-red-100' : ''}
+      className={`rounded-full px-4 ${shareState === 'success' ? 'bg-green-50 border-green-200 hover:bg-green-100' : shareState === 'error' ? 'bg-red-50 border-red-200 hover:bg-red-100' : 'hover:bg-neutral-100'}`}
       aria-label="Copy share link to clipboard"
     >
       {shareState === 'idle' && (

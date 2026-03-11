@@ -1,14 +1,12 @@
 'use client'
 
-import { useState } from 'react'
-import { X, Copy, Check, Maximize2 } from 'lucide-react'
+import { Maximize2 } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { SyntaxHighlighter } from './SyntaxHighlighter'
 import { SnippetWithTags } from '@/lib/services/snippets'
@@ -21,18 +19,6 @@ interface SnippetDetailDialogProps {
 }
 
 export function SnippetDetailDialog({ snippet, open, onOpenChange }: SnippetDetailDialogProps) {
-  const [copyState, setCopyState] = useState<'idle' | 'success'>('idle')
-
-  const handleCopyCode = async () => {
-    try {
-      await navigator.clipboard.writeText(snippet.code)
-      setCopyState('success')
-      setTimeout(() => setCopyState('idle'), 2000)
-    } catch (error) {
-      console.error('Failed to copy code:', error)
-    }
-  }
-
   const lineCount = snippet.code.split('\n').length
   const charCount = snippet.code.length
 
@@ -74,42 +60,17 @@ export function SnippetDetailDialog({ snippet, open, onOpenChange }: SnippetDeta
                 </span>
               </div>
             </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 shrink-0"
-              onClick={() => onOpenChange(false)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
           </div>
         </DialogHeader>
 
         {/* Code Content */}
         <div className="flex-1 overflow-y-auto px-6 py-4 custom-scrollbar">
-          <div className="relative">
-            <div className="absolute top-3 right-3 z-10 flex gap-2">
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={handleCopyCode}
-                className="shadow-sm"
-              >
-                {copyState === 'success' ? (
-                  <>
-                    <Check className="h-4 w-4 mr-2 text-green-600" />
-                    Copied!
-                  </>
-                ) : (
-                  <>
-                    <Copy className="h-4 w-4 mr-2" />
-                    Copy Code
-                  </>
-                )}
-              </Button>
-            </div>
-            <SyntaxHighlighter code={snippet.code} language={snippet.language} />
-          </div>
+          <SyntaxHighlighter 
+            code={snippet.code} 
+            language={snippet.language}
+            showLineNumbers={true}
+            showCopyButton={true}
+          />
         </div>
 
         {/* Footer */}

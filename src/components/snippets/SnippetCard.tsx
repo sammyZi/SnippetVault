@@ -15,6 +15,7 @@ import { SnippetWithTags } from '@/lib/services/snippets'
 import { ShareButton } from '@/components/snippets/ShareButton'
 import { ShareDialog } from '@/components/snippets/ShareDialog'
 import { SnippetDetailDialog } from '@/components/snippets/SnippetDetailDialog'
+import { ExportButton } from '@/components/snippets/ExportButton'
 
 interface SnippetCardProps {
   snippet: SnippetWithTags
@@ -101,11 +102,11 @@ export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
             </DropdownMenu>
           </div>
           <div className="flex items-center gap-2 mt-2">
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-xs rounded-full px-3 py-0.5 bg-neutral-100 border-neutral-300 font-semibold">
               {snippet.language}
             </Badge>
             {snippet.is_public && (
-              <Badge variant="secondary" className="text-xs">
+              <Badge variant="secondary" className="text-xs rounded-full px-3 py-0.5">
                 Public
               </Badge>
             )}
@@ -119,7 +120,7 @@ export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
             className="relative cursor-pointer" 
             onClick={() => setShowDetailDialog(true)}
           >
-            <pre className="text-xs bg-neutral-50 rounded-md p-3 overflow-x-auto border border-neutral-200 hover:border-neutral-300 transition-colors">
+            <pre className="text-xs bg-neutral-50 rounded-md p-3 overflow-x-auto border border-neutral-200 hover:border-neutral-300 transition-colors [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <code className="font-mono">{codePreview}</code>
             </pre>
             {hasMoreLines && (
@@ -148,7 +149,12 @@ export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
               ))}
             </div>
           )}
-          <div className="mt-3 flex justify-end">
+          <div className="mt-3 flex justify-end gap-2">
+            <ExportButton
+              snippetTitle={snippet.title}
+              code={snippet.code}
+              language={snippet.language}
+            />
             <ShareButton snippetId={snippet.id} />
           </div>
         </CardContent>
