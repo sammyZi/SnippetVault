@@ -170,7 +170,7 @@ export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
           {snippet.tags && snippet.tags.length > 0 ? (
             <div className="flex flex-wrap gap-1.5">
               {snippet.tags.slice(0, 4).map((tag) => (
-                <Badge key={tag.id} variant="secondary" className="text-xs rounded-md px-2.5 py-0.5 bg-primary-50 border border-primary-200 text-primary-700 font-medium">
+                <Badge key={tag.id} className="text-xs rounded-md px-2.5 py-0.5 bg-violet-100 text-violet-700 border border-violet-300 hover:bg-violet-100 font-medium">
                   #{tag.name}
                 </Badge>
               ))}

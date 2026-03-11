@@ -45,15 +45,15 @@ export function SnippetDetailDialog({ snippet, open, onOpenChange }: SnippetDeta
                   {snippet.language}
                 </Badge>
                 {snippet.is_public && (
-                  <Badge variant="secondary" className="text-xs rounded-full px-3 py-0.5">
+                  <Badge className="text-xs rounded-full px-3 py-0.5 bg-green-100 text-green-700 border border-green-300 hover:bg-green-100">
                     Public
                   </Badge>
                 )}
                 {snippet.tags && snippet.tags.length > 0 && (
                   <>
                     {snippet.tags.map((tag) => (
-                      <Badge key={tag.id} variant="secondary" className="text-xs rounded-full px-3 py-0.5">
-                        {tag.name}
+                      <Badge key={tag.id} className="text-xs rounded-full px-3 py-0.5 bg-violet-100 text-violet-700 border border-violet-300 hover:bg-violet-100">
+                        #{tag.name}
                       </Badge>
                     ))}
                   </>
