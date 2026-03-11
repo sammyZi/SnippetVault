@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { CreateSnippetButton } from './CreateSnippetButton'
 import { SnippetList } from './SnippetList'
 import { SnippetEditor } from './SnippetEditor'
+import { SearchBar } from './SearchBar'
+import { FilterPanel } from './FilterPanel'
 import {
   Dialog,
   DialogContent,
@@ -60,6 +62,16 @@ export function DashboardContent() {
           </p>
         </div>
         <CreateSnippetButton />
+      </div>
+
+      {/* Search and Filter Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+        <div className="lg:col-span-3">
+          <SearchBar />
+        </div>
+        <div className="lg:col-span-1">
+          <FilterPanel />
+        </div>
       </div>
 
       <SnippetList

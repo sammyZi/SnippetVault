@@ -157,9 +157,6 @@ export function SignupForm() {
                 className="pl-10 h-9 text-sm rounded-xl bg-neutral-50 border-neutral-300 focus:bg-white transition-all"
               />
             </div>
-            <p className={authTheme.form.helper}>
-              3-30 characters, letters, numbers, hyphens, and underscores only
-            </p>
           </div>
           <div className={authTheme.form.field}>
             <Label htmlFor="email" className={authTheme.form.label}>Email</Label>

@@ -9,6 +9,7 @@ import {
   SnippetFilters,
   SnippetWithTags,
 } from '../services/snippets'
+import { useUIStore } from '../store/uiStore'
 
 export const queryKeys = {
   snippets: {
@@ -21,9 +22,20 @@ export const queryKeys = {
 }
 
 export function useSnippets(filters?: SnippetFilters) {
+  const { searchQuery, languageFilter, tagFilter, visibilityFilter } = useUIStore()
+
+  // Merge store filters with any passed filters
+  const mergedFilters: SnippetFilters = {
+    ...filters,
+    searchQuery: searchQuery || filters?.searchQuery,
+    language: languageFilter || filters?.language,
+    tags: tagFilter.length > 0 ? tagFilter : filters?.tags,
+    visibility: visibilityFilter !== 'all' ? visibilityFilter : filters?.visibility,
+  }
+
   return useQuery({
-    queryKey: queryKeys.snippets.list(filters),
-    queryFn: () => getUserSnippets(filters),
+    queryKey: queryKeys.snippets.list(mergedFilters),
+    queryFn: () => getUserSnippets(mergedFilters),
   })
 }
 
