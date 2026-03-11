@@ -63,15 +63,15 @@ export function FilterPanel() {
   const hasActiveFilters = languageFilter || tagFilter.length > 0 || visibilityFilter !== 'all'
 
   return (
-    <div className="space-y-4 p-4 bg-white rounded-lg border border-neutral-200">
+    <div className="space-y-4 p-6 bg-white rounded-lg border border-neutral-200 shadow-sm">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-neutral-900">Filters</h3>
+        <h3 className="text-base font-semibold text-neutral-900">Filters</h3>
         {hasActiveFilters && (
           <Button
             variant="ghost"
             size="sm"
             onClick={handleClearFilters}
-            className="h-8 text-xs"
+            className="h-8 text-xs hover:bg-neutral-100"
           >
             Clear all
           </Button>
@@ -80,12 +80,12 @@ export function FilterPanel() {
 
       {/* Language Filter */}
       <div className="space-y-2">
-        <label className="text-xs font-medium text-neutral-700">Language</label>
+        <label className="text-sm font-medium text-neutral-700">Language</label>
         <Select
           value={languageFilter || 'all'}
           onValueChange={(value) => setLanguageFilter(value === 'all' ? null : value)}
         >
-          <SelectTrigger>
+          <SelectTrigger className="h-10">
             <SelectValue placeholder="All languages" />
           </SelectTrigger>
           <SelectContent>
@@ -101,14 +101,14 @@ export function FilterPanel() {
 
       {/* Visibility Filter */}
       <div className="space-y-2">
-        <label className="text-xs font-medium text-neutral-700">Visibility</label>
+        <label className="text-sm font-medium text-neutral-700">Visibility</label>
         <Select
           value={visibilityFilter}
           onValueChange={(value) =>
             setVisibilityFilter(value as 'all' | 'public' | 'private')
           }
         >
-          <SelectTrigger>
+          <SelectTrigger className="h-10">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -122,7 +122,7 @@ export function FilterPanel() {
       {/* Tag Filter */}
       {allTags && allTags.length > 0 && (
         <div className="space-y-2">
-          <label className="text-xs font-medium text-neutral-700">Tags</label>
+          <label className="text-sm font-medium text-neutral-700">Tags</label>
           <div className="flex flex-wrap gap-2">
             {allTags.map((tag) => {
               const isSelected = tagFilter.includes(tag.name)
@@ -130,7 +130,7 @@ export function FilterPanel() {
                 <Badge
                   key={tag.id}
                   variant={isSelected ? 'default' : 'outline'}
-                  className="cursor-pointer hover:bg-neutral-100"
+                  className="cursor-pointer hover:bg-neutral-100 transition-colors"
                   onClick={() => handleTagToggle(tag.name)}
                 >
                   {tag.name}

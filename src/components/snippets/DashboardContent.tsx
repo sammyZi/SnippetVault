@@ -64,15 +64,17 @@ export function DashboardContent() {
         <CreateSnippetButton />
       </div>
 
-      {/* Search and Filter Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
-        <div className="lg:col-span-3">
-          <SearchBar />
+      {/* Search and Filter Section - Only show if there are snippets */}
+      {snippets && snippets.length > 0 && (
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+          <div className="lg:col-span-3">
+            <SearchBar />
+          </div>
+          <div className="lg:col-span-1">
+            <FilterPanel />
+          </div>
         </div>
-        <div className="lg:col-span-1">
-          <FilterPanel />
-        </div>
-      </div>
+      )}
 
       <SnippetList
         snippets={snippets || []}
