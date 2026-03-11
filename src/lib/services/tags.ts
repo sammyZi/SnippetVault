@@ -19,7 +19,10 @@ export async function getOrCreateTags(tagNames: string[]): Promise<Tag[]> {
     .select('*')
     .in('name', normalizedNames)
 
-  if (fetchError) throw fetchError
+  if (fetchError) {
+    console.error('Error fetching tags:', fetchError)
+    throw new Error(`Failed to fetch tags: ${fetchError.message}`)
+  }
 
   const existingTagNames = new Set(existingTags?.map(tag => tag.name) || [])
   const newTagNames = normalizedNames.filter(name => !existingTagNames.has(name))
@@ -31,7 +34,10 @@ export async function getOrCreateTags(tagNames: string[]): Promise<Tag[]> {
       .insert(newTagNames.map(name => ({ name })))
       .select()
 
-    if (insertError) throw insertError
+    if (insertError) {
+      console.error('Error inserting tags:', insertError)
+      throw new Error(`Failed to create tags: ${insertError.message}`)
+    }
 
     return [...(existingTags || []), ...(newTags || [])]
   }
@@ -52,7 +58,10 @@ export async function assignTags(snippetId: string, tagIds: string[]): Promise<v
     .delete()
     .eq('snippet_id', snippetId)
 
-  if (deleteError) throw deleteError
+  if (deleteError) {
+    console.error('Error deleting snippet_tags:', deleteError)
+    throw new Error(`Failed to remove existing tags: ${deleteError.message}`)
+  }
 
   // Create new tag associations
   if (tagIds.length > 0) {
@@ -60,7 +69,10 @@ export async function assignTags(snippetId: string, tagIds: string[]): Promise<v
       .from('snippet_tags')
       .insert(tagIds.map(tagId => ({ snippet_id: snippetId, tag_id: tagId })))
 
-    if (insertError) throw insertError
+    if (insertError) {
+      console.error('Error inserting snippet_tags:', insertError)
+      throw new Error(`Failed to assign tags: ${insertError.message}`)
+    }
   }
 }
 

@@ -1,16 +1,24 @@
 'use client'
 
 import { useState } from 'react'
-import { Share2, Check, X } from 'lucide-react'
+import { Share2, Check, X, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 interface ShareButtonProps {
   snippetId: string
+  variant?: 'default' | 'outline' | 'ghost'
+  size?: 'default' | 'sm' | 'lg' | 'icon'
+  showLabel?: boolean
 }
 
 type ShareState = 'idle' | 'success' | 'error'
 
-export function ShareButton({ snippetId }: ShareButtonProps) {
+export function ShareButton({ 
+  snippetId, 
+  variant = 'outline', 
+  size = 'sm',
+  showLabel = true 
+}: ShareButtonProps) {
   const [shareState, setShareState] = useState<ShareState>('idle')
 
   const handleShare = async () => {
@@ -48,27 +56,27 @@ export function ShareButton({ snippetId }: ShareButtonProps) {
   return (
     <Button
       onClick={handleShare}
-      size="sm"
-      variant="outline"
-      className="h-8"
+      size={size}
+      variant={variant}
+      className={shareState === 'success' ? 'bg-green-50 border-green-200 hover:bg-green-100' : shareState === 'error' ? 'bg-red-50 border-red-200 hover:bg-red-100' : ''}
       aria-label="Copy share link to clipboard"
     >
       {shareState === 'idle' && (
         <>
-          <Share2 className="h-4 w-4 mr-1" />
-          Share
+          <Copy className="h-4 w-4" />
+          {showLabel && <span className="ml-2">Copy Link</span>}
         </>
       )}
       {shareState === 'success' && (
         <>
-          <Check className="h-4 w-4 mr-1 text-green-500" />
-          Link Copied!
+          <Check className="h-4 w-4 text-green-600" />
+          {showLabel && <span className="ml-2 text-green-600">Copied!</span>}
         </>
       )}
       {shareState === 'error' && (
         <>
-          <X className="h-4 w-4 mr-1 text-red-500" />
-          Failed
+          <X className="h-4 w-4 text-red-600" />
+          {showLabel && <span className="ml-2 text-red-600">Failed</span>}
         </>
       )}
     </Button>

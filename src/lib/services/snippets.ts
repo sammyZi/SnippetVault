@@ -39,7 +39,11 @@ export interface SnippetWithTags extends Snippet {
 export async function createSnippet(data: CreateSnippetInput): Promise<Snippet> {
   const supabase = createClient()
   
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError) {
+    console.error('Auth error:', authError)
+    throw new Error(`Authentication error: ${authError.message}`)
+  }
   if (!user) throw new Error('User not authenticated')
 
   const snippetData: SnippetInsert = {
@@ -57,12 +61,21 @@ export async function createSnippet(data: CreateSnippetInput): Promise<Snippet> 
     .select()
     .single()
 
-  if (error) throw error
+  if (error) {
+    console.error('Snippet insert error:', error)
+    throw new Error(`Failed to create snippet: ${error.message || JSON.stringify(error)}`)
+  }
 
   // Handle tags if provided
   if (data.tags && data.tags.length > 0) {
-    const tags = await getOrCreateTags(data.tags)
-    await assignTags(snippet.id, tags.map(tag => tag.id))
+    try {
+      const tags = await getOrCreateTags(data.tags)
+      await assignTags(snippet.id, tags.map(tag => tag.id))
+    } catch (tagError) {
+      console.error('Tag error:', tagError)
+      // Don't fail the whole operation if tags fail
+      console.warn('Failed to assign tags, but snippet was created')
+    }
   }
 
   return snippet
