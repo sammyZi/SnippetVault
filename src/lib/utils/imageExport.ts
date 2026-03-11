@@ -12,9 +12,11 @@ export async function exportElementToPng(
 ): Promise<void> {
   try {
     // Generate PNG data URL from the element
+    // Call toPng twice — first pass warms up font/style resolution, second produces clean output
+    await toPng(element, { cacheBust: true, pixelRatio: 2 });
     const dataUrl = await toPng(element, {
       cacheBust: true,
-      pixelRatio: 2, // Higher quality for retina displays
+      pixelRatio: 2,
     });
 
     // Create a temporary link element to trigger download

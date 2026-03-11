@@ -38,18 +38,18 @@ export function SnippetDetailDialog({ snippet, open, onOpenChange }: SnippetDeta
                 </p>
               )}
               <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="outline" className="text-xs">
+                <Badge variant="outline" className="text-xs rounded-full px-3 py-0.5">
                   {snippet.language}
                 </Badge>
                 {snippet.is_public && (
-                  <Badge variant="secondary" className="text-xs">
+                  <Badge variant="secondary" className="text-xs rounded-full px-3 py-0.5">
                     Public
                   </Badge>
                 )}
                 {snippet.tags && snippet.tags.length > 0 && (
                   <>
                     {snippet.tags.map((tag) => (
-                      <Badge key={tag.id} variant="secondary" className="text-xs">
+                      <Badge key={tag.id} variant="secondary" className="text-xs rounded-full px-3 py-0.5">
                         {tag.name}
                       </Badge>
                     ))}

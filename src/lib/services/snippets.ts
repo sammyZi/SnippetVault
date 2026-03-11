@@ -68,14 +68,11 @@ export async function createSnippet(data: CreateSnippetInput): Promise<Snippet> 
 
   // Handle tags if provided
   if (data.tags && data.tags.length > 0) {
-    try {
-      const tags = await getOrCreateTags(data.tags)
-      await assignTags(snippet.id, tags.map(tag => tag.id))
-    } catch (tagError) {
-      console.error('Tag error:', tagError)
-      // Don't fail the whole operation if tags fail
-      console.warn('Failed to assign tags, but snippet was created')
-    }
+    console.log('[DEBUG] Creating snippet tags:', data.tags)
+    const tags = await getOrCreateTags(data.tags)
+    console.log('[DEBUG] Got/created tags:', tags)
+    await assignTags(snippet.id, tags.map(tag => tag.id))
+    console.log('[DEBUG] Tags assigned successfully')
   }
 
   return snippet
@@ -147,7 +144,9 @@ export async function getSnippet(id: string): Promise<SnippetWithTags | null> {
 
   return {
     ...snippet,
-    tags: snippet.tags?.map((st: { tag: { id: string; name: string } }) => st.tag) || [],
+    tags: snippet.tags
+      ?.map((st: { tag: { id: string; name: string } | null }) => st.tag)
+      .filter((tag): tag is { id: string; name: string } => tag !== null) || [],
   }
 }
 
@@ -184,7 +183,9 @@ export async function getUserSnippets(filters?: SnippetFilters): Promise<Snippet
 
   let results = snippets.map(snippet => ({
     ...snippet,
-    tags: snippet.tags?.map((st: { tag: { id: string; name: string } }) => st.tag) || [],
+    tags: snippet.tags
+      ?.map((st: { tag: { id: string; name: string } | null }) => st.tag)
+      .filter((tag): tag is { id: string; name: string } => tag !== null) || [],
   }))
 
   if (filters?.tags && filters.tags.length > 0) {

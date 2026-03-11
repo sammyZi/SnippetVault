@@ -11,7 +11,9 @@ export async function getOrCreateTags(tagNames: string[]): Promise<Tag[]> {
   if (tagNames.length === 0) return []
 
   const supabase = createClient()
-  const normalizedNames = tagNames.map(name => name.trim().toLowerCase())
+  const normalizedNames = tagNames
+    .map(name => name.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, ''))
+    .filter(name => name.length > 0)
 
   // First, try to get existing tags
   const { data: existingTags, error: fetchError } = await supabase

@@ -64,7 +64,7 @@ export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="h-8 w-8 p-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <MoreVertical className="h-4 w-4" />
                   <span className="sr-only">Open menu</span>
@@ -128,7 +128,7 @@ export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
                 <Button 
                   variant="secondary" 
                   size="sm" 
-                  className="pointer-events-auto shadow-sm text-xs h-7"
+                  className="pointer-events-auto shadow-sm text-xs h-7 rounded-full"
                   onClick={(e) => {
                     e.stopPropagation()
                     setShowDetailDialog(true)
@@ -143,7 +143,7 @@ export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
           {snippet.tags && snippet.tags.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-3">
               {snippet.tags.map((tag) => (
-                <Badge key={tag.id} variant="secondary" className="text-xs">
+                <Badge key={tag.id} variant="secondary" className="text-xs rounded-full px-3 py-0.5">
                   {tag.name}
                 </Badge>
               ))}

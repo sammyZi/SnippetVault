@@ -30,10 +30,22 @@ export function ExportButton({
 
     setIsExporting(true);
     try {
+      // Temporarily make the element visible for capture
+      const el = exportRef.current;
+      el.style.opacity = '1';
+      el.style.zIndex = '-1';
+
+      // Wait a frame for the browser to paint
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+
       const filename = `${sanitizeFilename(snippetTitle)}.png`;
-      await exportElementToPng(exportRef.current, filename);
+      await exportElementToPng(el, filename);
+
+      // Hide it again
+      el.style.opacity = '0';
     } catch (error) {
       console.error('Export failed:', error);
+      if (exportRef.current) exportRef.current.style.opacity = '0';
       alert('Failed to export image. Please try again.');
     } finally {
       setIsExporting(false);
@@ -47,6 +59,7 @@ export function ExportButton({
         size={size}
         onClick={handleExport}
         disabled={isExporting}
+        className="rounded-full"
       >
         <Download className="h-4 w-4 mr-2" />
         {isExporting ? 'Exporting...' : 'Export as Image'}
@@ -56,13 +69,16 @@ export function ExportButton({
       <div
         ref={exportRef}
         style={{
-          position: 'absolute',
-          left: '-9999px',
-          top: '-9999px',
+          position: 'fixed',
+          left: 0,
+          top: 0,
           width: '800px',
           backgroundColor: '#1e1e1e',
           padding: '32px',
           borderRadius: '12px',
+          zIndex: -1,
+          opacity: 0,
+          pointerEvents: 'none',
         }}
       >
         {/* Snippet title */}
@@ -96,7 +112,7 @@ export function ExportButton({
         </div>
 
         {/* Syntax-highlighted code */}
-        <div style={{ marginTop: '16px' }}>
+        <div style={{ marginTop: '16px', overflow: 'hidden' }}>
           <SyntaxHighlighterLib
             language={language.toLowerCase()}
             style={vscDarkPlus}
@@ -107,13 +123,16 @@ export function ExportButton({
               fontSize: '14px',
               padding: '16px',
               backgroundColor: '#1e1e1e',
+              overflow: 'hidden',
             }}
             codeTagProps={{
               style: {
                 fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
               },
             }}
-            wrapLongLines={false}
+            wrapLongLines={true}
           >
             {code}
           </SyntaxHighlighterLib>
