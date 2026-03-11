@@ -213,14 +213,21 @@ export function SnippetEditor({ initialData, onSubmit, onCancel, isLoading }: Sn
           control={form.control}
           name="is_public"
           render={({ field }) => (
-            <FormItem className="flex items-center space-x-2 space-y-0">
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border border-neutral-200 p-4 space-y-0">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base font-medium">
+                  Make snippet public
+                </FormLabel>
+                <div className="text-sm text-neutral-500">
+                  Public snippets can be viewed by anyone with the link
+                </div>
+              </div>
               <FormControl>
                 <Switch
                   checked={field.value}
                   onCheckedChange={field.onChange}
                 />
               </FormControl>
-              <FormLabel className="!mt-0">Make snippet public</FormLabel>
             </FormItem>
           )}
         />
