@@ -2,8 +2,7 @@ import { getUser, getProfile } from '../actions/auth'
 import { redirect } from 'next/navigation'
 import { Braces } from 'lucide-react'
 import { DashboardContent } from '@/components/snippets/DashboardContent'
-import { LogoutButton } from '@/components/auth/LogoutButton'
-import { ShareProfileButton } from '@/components/profile/ShareProfileButton'
+import { UserMenu } from '@/components/auth/UserMenu'
 
 export default async function DashboardPage() {
   const user = await getUser()
@@ -30,26 +29,10 @@ export default async function DashboardPage() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                {profile?.avatar_url ? (
-                  <img
-                    src={profile.avatar_url}
-                    alt={profile.display_name || profile.username || ''}
-                    className="w-8 h-8 rounded-full object-cover border border-neutral-200"
-                  />
-                ) : (
-                  <div className="w-8 h-8 rounded-full bg-primary-100 border border-primary-200 flex items-center justify-center text-sm font-bold text-primary-700">
-                    {(profile?.display_name || profile?.username || user.email || '?').charAt(0).toUpperCase()}
-                  </div>
-                )}
-                <span className="text-sm font-medium text-neutral-700 hidden sm:inline">
-                  {profile?.display_name || profile?.username}
-                </span>
-              </div>
-              {profile?.username && <ShareProfileButton username={profile.username} />}
-              <LogoutButton />
-            </div>
+            <UserMenu 
+              profile={profile}
+              email={user.email || ''}
+            />
           </div>
         </div>
       </header>
