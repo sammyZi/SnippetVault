@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { SnippetWithTags } from '@/lib/services/snippets'
+import { ShareButton } from '@/components/snippets/ShareButton'
 
 interface SnippetCardProps {
   snippet: SnippetWithTags
@@ -108,6 +109,9 @@ export function SnippetCard({ snippet, onEdit, onDelete }: SnippetCardProps) {
             ))}
           </div>
         )}
+        <div className="mt-3 flex justify-end">
+          <ShareButton snippetId={snippet.id} />
+        </div>
       </CardContent>
     </Card>
   )
