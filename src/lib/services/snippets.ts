@@ -39,7 +39,8 @@ export interface SnippetWithTags extends Snippet {
 export async function createSnippet(data: CreateSnippetInput): Promise<Snippet> {
   const supabase = createClient()
   
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  const { data: { session }, error: authError } = await supabase.auth.getSession()
+  const user = session?.user
   if (authError) {
     console.error('Auth error:', authError)
     throw new Error(`Authentication error: ${authError.message}`)
@@ -156,7 +157,8 @@ export async function getSnippet(id: string): Promise<SnippetWithTags | null> {
 export async function getUserSnippets(filters?: SnippetFilters): Promise<SnippetWithTags[]> {
   const supabase = createClient()
   
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { session } } = await supabase.auth.getSession()
+  const user = session?.user
   if (!user) throw new Error('User not authenticated')
 
   let query = supabase
