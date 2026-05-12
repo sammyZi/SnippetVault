@@ -2,10 +2,8 @@
 
 import { useState } from 'react'
 import { signUp } from '@/app/actions/auth'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
@@ -14,9 +12,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { Braces, User, Mail, Lock, Loader2, AlertCircle, CheckCircle, Eye, EyeOff } from 'lucide-react'
-import { theme } from '@/lib/theme'
+import { User, Mail, Lock, Loader2, AlertCircle, CheckCircle, Eye, EyeOff, ArrowRight } from 'lucide-react'
 
 export function SignupForm() {
   const [error, setError] = useState<string | null>(null)
@@ -27,8 +25,6 @@ export function SignupForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [pendingFormData, setPendingFormData] = useState<FormData | null>(null)
-  
-  const authTheme = theme.pages.auth
 
   function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -76,73 +72,116 @@ export function SignupForm() {
 
   if (success) {
     return (
-      <Card className={authTheme.card.container}>
-        <CardHeader className={authTheme.card.header}>
-          <div className={`${authTheme.card.iconContainer} bg-success-100`}>
-            <CheckCircle className="w-8 h-8 text-success-600" strokeWidth={2.5} />
-          </div>
-          <CardTitle className={authTheme.card.title}>Check your email</CardTitle>
-          <CardDescription className={authTheme.card.description}>
-            We sent a confirmation link to your inbox
-          </CardDescription>
-        </CardHeader>
-        <CardContent className={authTheme.card.content}>
-          <div className="flex items-start gap-3 p-4 bg-success-50 border-2 border-success-200 rounded-xl">
-            <Mail className="w-5 h-5 text-success-600 shrink-0 mt-0.5" />
+      <div className="animate-fadeInUp">
+        {/* Section label */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-6 h-px" style={{ backgroundColor: '#3d8c40' }} />
+          <span className="text-[10px] tracking-[0.25em] uppercase font-semibold" style={{ color: '#3d8c40' }}>
+            Confirmation
+          </span>
+        </div>
+
+        <div className="flex items-center gap-3 mb-4">
+          <CheckCircle className="w-6 h-6" style={{ color: '#3d8c40' }} strokeWidth={2} />
+          <h1 className="text-3xl tracking-tight" style={{ fontFamily: 'var(--font-serif)', color: 'var(--editorial-ink)' }}>
+            Check your email
+          </h1>
+        </div>
+        <p className="text-sm mb-8" style={{ color: 'var(--editorial-muted)' }}>
+          We sent a confirmation link to your inbox
+        </p>
+
+        <div className="h-px w-full mb-8" style={{ backgroundColor: 'var(--editorial-rule)' }} />
+
+        <div className="p-4 rounded-sm border mb-6" style={{ backgroundColor: 'rgba(61, 140, 64, 0.06)', borderColor: 'rgba(61, 140, 64, 0.2)' }}>
+          <div className="flex items-start gap-3">
+            <Mail className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#3d8c40' }} />
             <div className="space-y-1 min-w-0 flex-1">
-              <p className="text-sm font-bold text-success-900">Confirmation email sent to:</p>
-              <p className="text-base text-success-700 font-medium break-all">{email}</p>
-            </div>
-          </div>
-          <div className="space-y-4 text-base text-neutral-700 leading-relaxed">
-            <p className="font-medium">
-              Please check your email and click the confirmation link to activate your account.
-            </p>
-            <div className="p-4 bg-warning-50 border border-warning-200 rounded-xl">
-              <p className="text-sm text-warning-900">
-                <span className="font-bold">Didn&apos;t receive the email?</span>
-                <br />
-                <span className="text-warning-800">Check your spam folder or contact support if you need help.</span>
+              <p className="text-[11px] tracking-[0.1em] uppercase font-semibold" style={{ color: 'var(--editorial-ink)' }}>
+                Confirmation sent to:
               </p>
+              <p className="text-sm font-medium break-all" style={{ color: '#3d8c40' }}>{email}</p>
             </div>
           </div>
-          <div className="pt-2">
-            <Link href="/login" className="block w-full">
-              <Button className={authTheme.button.primary}>
-                Go to login
-              </Button>
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+
+        <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--editorial-muted)' }}>
+          Please check your email and click the confirmation link to activate your account.
+        </p>
+
+        <div className="p-3 rounded-sm border mb-8" style={{ backgroundColor: 'rgba(192, 150, 42, 0.06)', borderColor: 'rgba(192, 150, 42, 0.2)' }}>
+          <p className="text-[12px]" style={{ color: 'var(--editorial-muted)' }}>
+            <span className="font-semibold" style={{ color: 'var(--editorial-ink)' }}>Didn&apos;t receive it?</span>{' '}
+            Check your spam folder or contact support.
+          </p>
+        </div>
+
+        <Link
+          href="/login"
+          className="w-full h-11 flex items-center justify-center gap-2 text-sm font-semibold rounded-full transition-all hover:scale-[1.01] hover:shadow-lg active:scale-[0.99]"
+          style={{
+            backgroundColor: 'var(--editorial-ink)',
+            color: 'var(--editorial-bg)',
+          }}
+        >
+          Go to login <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
     )
+  }
+
+  const inputStyles = {
+    backgroundColor: 'var(--editorial-bg-alt)',
+    color: 'var(--editorial-ink)',
   }
 
   return (
     <>
-      <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <Card className="w-full max-w-md rounded-2xl border-2 border-white/40 bg-white shadow-2xl">
-        <CardHeader className={authTheme.card.header}>
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-primary-100 border border-primary-200 mx-auto mb-4">
-            <Braces className="w-8 h-8 text-primary-600" strokeWidth={2.5} />
-          </div>
-          <CardTitle className={authTheme.card.title}>Create an account</CardTitle>
-          <CardDescription className={authTheme.card.description}>
-            Sign up to start saving your code snippets
-          </CardDescription>
-        </CardHeader>
-      <form onSubmit={handleFormSubmit}>
-        <CardContent className={authTheme.card.content}>
+      <div className="animate-fadeInUp">
+        {/* Section label */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-6 h-px" style={{ backgroundColor: 'var(--editorial-accent)' }} />
+          <span className="text-[10px] tracking-[0.25em] uppercase font-semibold" style={{ color: 'var(--editorial-accent)' }}>
+            Authentication
+          </span>
+        </div>
+
+        {/* Heading */}
+        <h1 className="text-4xl tracking-tight mb-2" style={{ fontFamily: 'var(--font-serif)', color: 'var(--editorial-ink)' }}>
+          Create an account
+        </h1>
+        <p className="text-sm mb-10" style={{ color: 'var(--editorial-muted)' }}>
+          Sign up to start saving your code snippets
+        </p>
+
+        {/* Divider */}
+        <div className="h-px w-full mb-8" style={{ backgroundColor: 'var(--editorial-rule)' }} />
+
+        <form onSubmit={handleFormSubmit} className="space-y-5">
           {error && (
-            <div className="flex items-center gap-2 p-3 text-sm text-error-700 bg-error-50/80 backdrop-blur-sm border border-error-200 rounded-xl animate-in fade-in slide-in-from-top-2 duration-300">
+            <div
+              className="flex items-center gap-2 p-3 text-sm rounded-sm border animate-fadeInUp"
+              style={{
+                color: 'var(--editorial-accent)',
+                backgroundColor: 'rgba(192, 69, 42, 0.06)',
+                borderColor: 'rgba(192, 69, 42, 0.2)',
+              }}
+            >
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{error}</span>
             </div>
           )}
-          <div className={authTheme.form.field}>
-            <Label htmlFor="username" className={authTheme.form.label}>Username</Label>
+
+          <div className="space-y-2">
+            <Label
+              htmlFor="username"
+              className="text-[11px] tracking-[0.15em] uppercase font-semibold"
+              style={{ color: 'var(--editorial-ink)' }}
+            >
+              Username
+            </Label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--editorial-muted)' }} />
               <Input
                 id="username"
                 name="username"
@@ -154,14 +193,22 @@ export function SignupForm() {
                 maxLength={30}
                 pattern="[a-zA-Z0-9_-]+"
                 title="Username can only contain letters, numbers, hyphens, and underscores"
-                className="pl-10 h-9 text-sm rounded-xl bg-neutral-50 border-neutral-300 focus:bg-white transition-all"
+                className="pl-10 h-11 text-sm rounded-sm border-[var(--editorial-rule)] focus:border-[var(--editorial-ink)] transition-all"
+                style={inputStyles}
               />
             </div>
           </div>
-          <div className={authTheme.form.field}>
-            <Label htmlFor="email" className={authTheme.form.label}>Email</Label>
+
+          <div className="space-y-2">
+            <Label
+              htmlFor="email"
+              className="text-[11px] tracking-[0.15em] uppercase font-semibold"
+              style={{ color: 'var(--editorial-ink)' }}
+            >
+              Email
+            </Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--editorial-muted)' }} />
               <Input
                 id="email"
                 name="email"
@@ -169,14 +216,22 @@ export function SignupForm() {
                 placeholder="you@example.com"
                 required
                 disabled={loading}
-                className="pl-10 h-9 text-sm rounded-xl bg-neutral-50 border-neutral-300 focus:bg-white transition-all"
+                className="pl-10 h-11 text-sm rounded-sm border-[var(--editorial-rule)] focus:border-[var(--editorial-ink)] transition-all"
+                style={inputStyles}
               />
             </div>
           </div>
-          <div className={authTheme.form.field}>
-            <Label htmlFor="password" className={authTheme.form.label}>Password</Label>
+
+          <div className="space-y-2">
+            <Label
+              htmlFor="password"
+              className="text-[11px] tracking-[0.15em] uppercase font-semibold"
+              style={{ color: 'var(--editorial-ink)' }}
+            >
+              Password
+            </Label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--editorial-muted)' }} />
               <Input
                 id="password"
                 name="password"
@@ -185,26 +240,31 @@ export function SignupForm() {
                 required
                 disabled={loading}
                 minLength={8}
-                className="pl-10 pr-10 h-9 text-sm rounded-xl bg-neutral-50 border-neutral-300 focus:bg-white transition-all"
+                className="pl-10 pr-10 h-11 text-sm rounded-sm border-[var(--editorial-rule)] focus:border-[var(--editorial-ink)] transition-all"
+                style={inputStyles}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
+                style={{ color: 'var(--editorial-muted)' }}
                 disabled={loading}
               >
-                {showPassword ? (
-                  <EyeOff className="w-4 h-4" />
-                ) : (
-                  <Eye className="w-4 h-4" />
-                )}
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
           </div>
-          <div className={authTheme.form.field}>
-            <Label htmlFor="confirmPassword" className={authTheme.form.label}>Confirm Password</Label>
+
+          <div className="space-y-2">
+            <Label
+              htmlFor="confirmPassword"
+              className="text-[11px] tracking-[0.15em] uppercase font-semibold"
+              style={{ color: 'var(--editorial-ink)' }}
+            >
+              Confirm Password
+            </Label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--editorial-muted)' }} />
               <Input
                 id="confirmPassword"
                 name="confirmPassword"
@@ -213,70 +273,81 @@ export function SignupForm() {
                 required
                 disabled={loading}
                 minLength={8}
-                className="pl-10 pr-10 h-9 text-sm rounded-xl bg-neutral-50 border-neutral-300 focus:bg-white transition-all"
+                className="pl-10 pr-10 h-11 text-sm rounded-sm border-[var(--editorial-rule)] focus:border-[var(--editorial-ink)] transition-all"
+                style={inputStyles}
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
+                style={{ color: 'var(--editorial-muted)' }}
                 disabled={loading}
               >
-                {showConfirmPassword ? (
-                  <EyeOff className="w-4 h-4" />
-                ) : (
-                  <Eye className="w-4 h-4" />
-                )}
+                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
           </div>
-          <div className="pt-2 space-y-4">
-            <Button 
-              type="submit" 
-              className="w-full h-9 text-sm font-bold rounded-xl bg-primary-600 hover:bg-primary-700 text-white shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-600/40 transition-all"
+
+          <div className="pt-2 space-y-5">
+            <button
+              type="submit"
               disabled={loading}
+              className="w-full h-11 flex items-center justify-center gap-2 text-sm font-semibold rounded-full transition-all hover:scale-[1.01] hover:shadow-lg active:scale-[0.99] disabled:opacity-50"
+              style={{
+                backgroundColor: 'var(--editorial-ink)',
+                color: 'var(--editorial-bg)',
+              }}
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin" />
                   Creating account...
                 </>
-              ) : 'Sign up'}
-            </Button>
-            <p className="text-sm text-center text-neutral-700">
+              ) : (
+                <>
+                  Sign up <ArrowRight className="w-4 h-4" />
+                </>
+              )}
+            </button>
+
+            {/* Divider */}
+            <div className="h-px w-full" style={{ backgroundColor: 'var(--editorial-rule)' }} />
+
+            <p className="text-sm text-center" style={{ color: 'var(--editorial-muted)' }}>
               Already have an account?{' '}
-              <Link href="/login" className="text-primary-600 hover:text-primary-700 font-bold transition-colors">
+              <Link href="/login" className="font-semibold transition-colors hover:underline" style={{ color: 'var(--editorial-ink)' }}>
                 Sign in
               </Link>
             </p>
           </div>
-        </CardContent>
-      </form>
-      </Card>
-    </div>
+        </form>
+      </div>
 
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-        <DialogContent className="sm:max-w-md rounded-2xl">
+        <DialogContent className="sm:max-w-md rounded-sm border-[var(--editorial-rule)]" style={{ backgroundColor: 'var(--editorial-bg)' }}>
           <DialogHeader>
-            <DialogTitle className="text-lg font-bold">Confirm account creation</DialogTitle>
-            <DialogDescription className="text-sm">
+            <DialogTitle className="text-lg" style={{ fontFamily: 'var(--font-serif)', color: 'var(--editorial-ink)' }}>
+              Confirm account creation
+            </DialogTitle>
+            <DialogDescription className="text-sm" style={{ color: 'var(--editorial-muted)' }}>
               Are you sure you want to create an account with these details?
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 py-4">
-            <div className="flex items-start gap-3 p-3 bg-neutral-50 border border-neutral-200 rounded-xl">
-              <User className="w-4 h-4 text-neutral-600 shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 p-3 rounded-sm border border-[var(--editorial-rule)]" style={{ backgroundColor: 'var(--editorial-bg-alt)' }}>
+              <User className="w-4 h-4 shrink-0 mt-0.5" style={{ color: 'var(--editorial-muted)' }} />
               <div className="space-y-1 min-w-0 flex-1">
-                <p className="text-sm font-bold text-neutral-900">Username</p>
-                <p className="text-sm text-neutral-600 break-all">
+                <p className="text-[11px] tracking-[0.1em] uppercase font-semibold" style={{ color: 'var(--editorial-ink)' }}>Username</p>
+                <p className="text-sm break-all" style={{ color: 'var(--editorial-muted)' }}>
                   {pendingFormData?.get('username') as string}
                 </p>
               </div>
             </div>
-            <div className="flex items-start gap-3 p-3 bg-neutral-50 border border-neutral-200 rounded-xl">
-              <Mail className="w-4 h-4 text-neutral-600 shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 p-3 rounded-sm border border-[var(--editorial-rule)]" style={{ backgroundColor: 'var(--editorial-bg-alt)' }}>
+              <Mail className="w-4 h-4 shrink-0 mt-0.5" style={{ color: 'var(--editorial-muted)' }} />
               <div className="space-y-1 min-w-0 flex-1">
-                <p className="text-sm font-bold text-neutral-900">Email</p>
-                <p className="text-sm text-neutral-600 break-all">
+                <p className="text-[11px] tracking-[0.1em] uppercase font-semibold" style={{ color: 'var(--editorial-ink)' }}>Email</p>
+                <p className="text-sm break-all" style={{ color: 'var(--editorial-muted)' }}>
                   {pendingFormData?.get('email') as string}
                 </p>
               </div>
@@ -287,17 +358,22 @@ export function SignupForm() {
               type="button"
               variant="outline"
               onClick={() => setShowConfirmDialog(false)}
-              className="rounded-xl"
+              className="rounded-full border-[var(--editorial-rule)] text-sm"
+              style={{ color: 'var(--editorial-ink)' }}
             >
               Cancel
             </Button>
-            <Button
+            <button
               type="button"
               onClick={confirmSignup}
-              className="rounded-xl bg-primary-600 hover:bg-primary-700 text-white"
+              className="h-10 px-5 text-sm font-semibold rounded-full transition-all hover:scale-[1.01] active:scale-[0.99]"
+              style={{
+                backgroundColor: 'var(--editorial-ink)',
+                color: 'var(--editorial-bg)',
+              }}
             >
-              Confirm & Create Account
-            </Button>
+              Confirm & Create
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

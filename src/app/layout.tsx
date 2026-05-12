@@ -1,19 +1,24 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Comic_Neue } from "next/font/google";
+import { DM_Serif_Display, Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import { Toaster } from "sonner";
 
-const comicNeue = Comic_Neue({
+const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
-  weight: ["300", "400", "700"],
-  variable: "--font-comic-neue",
+  weight: ["400"],
+  variable: "--font-serif",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
   title: "SnippetVault",
-  description: "A modern code snippet manager",
+  description: "A modern code snippet manager — capture, organise, share.",
 };
 
 export default function RootLayout({
@@ -22,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", comicNeue.variable)}>
+    <html lang="en" className={cn(dmSerif.variable, inter.variable)}>
       <head>
         <style dangerouslySetInnerHTML={{__html: `
           @view-transition {
@@ -30,7 +35,7 @@ export default function RootLayout({
           }
         `}} />
       </head>
-      <body className={cn("antialiased", comicNeue.className)}>
+      <body className={cn("antialiased", inter.className)}>
         <QueryProvider>
           {children}
           <Toaster richColors position="top-right" />

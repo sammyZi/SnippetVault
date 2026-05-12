@@ -9,7 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-comic-neue)', 'ui-sans-serif', 'system-ui'],
+        sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui'],
+        serif: ['var(--font-serif)', 'ui-serif', 'Georgia'],
       },
       colors: {
         background: "hsl(var(--background))",
