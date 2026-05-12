@@ -2,8 +2,6 @@
 
 import Link from 'next/link'
 import { Code2, Globe } from 'lucide-react'
-import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Database } from '@/lib/database.types'
 import { ShareButton } from '@/components/snippets/ShareButton'
 
@@ -23,34 +21,34 @@ export function PublicSnippetCard({ snippet }: PublicSnippetCardProps) {
 
   return (
     <Link href={`/s/${snippet.id}`}>
-      <Card className="group relative flex flex-col h-full overflow-hidden border-neutral-200/80 hover:border-primary-300 bg-white hover:shadow-xl hover:shadow-primary-100/40 transition-all duration-300 cursor-pointer">
-        {/* Top color accent bar */}
-        <div className="h-1 w-full bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 opacity-60 group-hover:opacity-100 transition-opacity" />
+      <div className="group relative flex flex-col h-full overflow-hidden border border-[var(--editorial-rule)] hover:border-[var(--editorial-ink)]/30 transition-all duration-300 cursor-pointer rounded-sm" style={{ backgroundColor: 'var(--editorial-bg-alt)' }}>
+        {/* Top accent */}
+        <div className="h-px w-full opacity-60 group-hover:opacity-100 transition-opacity" style={{ backgroundColor: 'var(--editorial-accent)' }} />
 
         {/* Header */}
         <div className="px-4 pt-4 pb-3">
-          <h3 className="text-base font-bold text-neutral-900 truncate group-hover:text-primary-700 transition-colors">
+          <h3 className="text-base font-semibold truncate group-hover:text-[var(--editorial-accent)] transition-colors" style={{ color: 'var(--editorial-ink)' }}>
             {snippet.title}
           </h3>
           {snippet.description && (
-            <p className="text-sm text-neutral-500 mt-1 line-clamp-1">
+            <p className="text-sm mt-1 line-clamp-1" style={{ color: 'var(--editorial-muted)' }}>
               {snippet.description}
             </p>
           )}
 
           {/* Badges row */}
           <div className="flex items-center gap-1.5 mt-2.5 flex-wrap">
-            <Badge variant="outline" className="text-xs rounded-md px-2.5 py-0.5 bg-neutral-900 text-neutral-100 border-transparent font-mono font-medium">
-              <Code2 className="h-3.5 w-3.5 mr-1" />
+            <span className="text-[10px] tracking-[0.1em] uppercase px-2 py-0.5 font-mono rounded-sm flex items-center gap-1" style={{ backgroundColor: 'var(--editorial-ink)', color: 'var(--editorial-bg)' }}>
+              <Code2 className="h-3 w-3" />
               {snippet.language}
-            </Badge>
+            </span>
             {snippet.is_public && (
-              <Badge variant="outline" className="text-xs rounded-md px-2.5 py-0.5 border-transparent font-medium bg-emerald-50 text-emerald-700">
-                <Globe className="h-3.5 w-3.5 mr-1" />
+              <span className="text-[10px] tracking-[0.1em] uppercase px-2 py-0.5 font-mono border rounded-sm flex items-center gap-1 border-green-600/30 text-green-700" style={{ backgroundColor: 'rgba(34,197,94,0.08)' }}>
+                <Globe className="h-3 w-3" />
                 Public
-              </Badge>
+              </span>
             )}
-            <span className="text-xs text-neutral-400 font-medium ml-auto">
+            <span className="text-[10px] font-mono ml-auto" style={{ color: 'var(--editorial-muted)' }}>
               {lineCount} lines
             </span>
           </div>
@@ -58,11 +56,11 @@ export function PublicSnippetCard({ snippet }: PublicSnippetCardProps) {
 
         {/* Code preview */}
         <div className="px-4 flex-1">
-          <div className="relative rounded-lg overflow-hidden border border-neutral-200/80 bg-neutral-950">
-            <pre className="text-xs p-3 overflow-hidden text-neutral-300 leading-relaxed h-[72px]">
+          <div className="relative rounded-sm overflow-hidden border border-[var(--editorial-rule)]" style={{ backgroundColor: 'var(--editorial-ink)' }}>
+            <pre className="text-xs p-3 overflow-hidden leading-relaxed h-[72px]" style={{ color: '#e8e0d4' }}>
               <code className="font-mono">{codePreview}</code>
             </pre>
-            <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-neutral-950 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-6" style={{ background: `linear-gradient(to top, var(--editorial-ink), transparent)` }} />
           </div>
         </div>
 
@@ -71,14 +69,14 @@ export function PublicSnippetCard({ snippet }: PublicSnippetCardProps) {
           {snippet.tags && snippet.tags.length > 0 ? (
             <div className="flex flex-wrap gap-1.5">
               {snippet.tags.slice(0, 4).map((tag) => (
-                <Badge key={tag.id} className="text-xs rounded-md px-2.5 py-0.5 bg-violet-100 text-violet-700 border border-violet-300 hover:bg-violet-100 font-medium">
+                <span key={tag.id} className="text-[10px] tracking-[0.1em] uppercase px-2 py-0.5 font-mono border border-[var(--editorial-rule)] rounded-sm" style={{ color: 'var(--editorial-muted)' }}>
                   #{tag.name}
-                </Badge>
+                </span>
               ))}
               {snippet.tags.length > 4 && (
-                <Badge variant="secondary" className="text-xs rounded-md px-2.5 py-0.5 bg-neutral-100 text-neutral-500 font-medium">
+                <span className="text-[10px] tracking-[0.1em] uppercase px-2 py-0.5 font-mono border border-[var(--editorial-rule)] rounded-sm" style={{ color: 'var(--editorial-muted)' }}>
                   +{snippet.tags.length - 4}
-                </Badge>
+                </span>
               )}
             </div>
           ) : (
@@ -90,7 +88,7 @@ export function PublicSnippetCard({ snippet }: PublicSnippetCardProps) {
         <div className="px-4 pb-4" onClick={(e) => e.preventDefault()}>
           <ShareButton snippetId={snippet.id} />
         </div>
-      </Card>
+      </div>
     </Link>
   )
 }

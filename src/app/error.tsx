@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Button } from '@/components/ui/button'
 import { AlertCircle, Home, RotateCcw } from 'lucide-react'
 
 export default function Error({
@@ -17,44 +16,47 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-red-300 rounded-full mix-blend-multiply filter blur-xl animate-blob" />
-        <div className="absolute top-40 right-20 w-72 h-72 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000" />
-        <div className="absolute bottom-20 left-40 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000" />
-      </div>
-      
-      <div className="text-center max-w-md relative z-10">
-        <div className="w-24 h-24 bg-gradient-to-br from-red-400 to-orange-400 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-pulse">
-          <AlertCircle className="w-12 h-12 text-white" />
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: 'var(--editorial-bg)' }}>
+      <div className="text-center max-w-md">
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <div className="w-6 h-px" style={{ backgroundColor: 'var(--editorial-accent)' }} />
+          <span className="text-[10px] tracking-[0.25em] uppercase font-semibold" style={{ color: 'var(--editorial-accent)' }}>
+            Error
+          </span>
+          <div className="w-6 h-px" style={{ backgroundColor: 'var(--editorial-accent)' }} />
         </div>
-        <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">Oops!</h1>
-        <h2 className="text-2xl font-semibold mb-3 text-neutral-800">Something went wrong</h2>
-        <p className="text-neutral-600 mb-6 leading-relaxed">
+        
+        <div className="w-16 h-16 rounded-full border-2 border-[var(--editorial-accent)]/30 flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: 'rgba(192,69,42,0.06)' }}>
+          <AlertCircle className="w-8 h-8" style={{ color: 'var(--editorial-accent)' }} />
+        </div>
+        
+        <h1 className="text-5xl mb-3" style={{ fontFamily: 'var(--font-serif)', color: 'var(--editorial-ink)' }}>Oops!</h1>
+        <h2 className="text-lg font-medium mb-3" style={{ color: 'var(--editorial-ink)' }}>Something went wrong</h2>
+        <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--editorial-muted)' }}>
           An unexpected error occurred. Please try again.
         </p>
         {error.digest && (
-          <p className="text-xs text-neutral-500 mb-6 font-mono bg-white/50 px-3 py-2 rounded-lg">
+          <p className="text-[10px] tracking-[0.1em] uppercase font-mono mb-6 px-3 py-2 rounded-sm border border-[var(--editorial-rule)]" style={{ color: 'var(--editorial-muted)', backgroundColor: 'var(--editorial-bg-alt)' }}>
             Error ID: {error.digest}
           </p>
         )}
         <div className="flex gap-3 justify-center">
-          <Button
+          <button
             onClick={reset}
-            className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+            className="h-10 px-5 flex items-center gap-2 text-sm font-semibold rounded-full transition-all hover:scale-[1.02] active:scale-[0.98]"
+            style={{ backgroundColor: 'var(--editorial-ink)', color: 'var(--editorial-bg)' }}
           >
-            <RotateCcw className="w-4 h-4 mr-2" />
+            <RotateCcw className="w-4 h-4" />
             Try again
-          </Button>
-          <Button
+          </button>
+          <button
             onClick={() => window.location.href = '/dashboard'}
-            variant="outline"
-            className="border-2 hover:bg-white/80"
+            className="h-10 px-5 flex items-center gap-2 text-sm font-medium rounded-full border border-[var(--editorial-rule)] transition-all hover:bg-[var(--editorial-bg-alt)]"
+            style={{ color: 'var(--editorial-ink)' }}
           >
-            <Home className="w-4 h-4 mr-2" />
-            Go to Dashboard
-          </Button>
+            <Home className="w-4 h-4" />
+            Dashboard
+          </button>
         </div>
       </div>
     </div>

@@ -24,9 +24,13 @@ export function PublicProfile({ profile }: PublicProfileProps) {
     <div>
       <ProfileHeader profile={profile} snippetCount={profile.snippets.length} />
       
-      <div className="mb-4">
-        <h2 className="text-xl font-semibold text-neutral-900">Public Snippets</h2>
+      <div className="mb-4 flex items-center gap-3">
+        <div className="w-6 h-px" style={{ backgroundColor: 'var(--editorial-accent)' }} />
+        <span className="text-[10px] tracking-[0.25em] uppercase font-semibold" style={{ color: 'var(--editorial-accent)' }}>
+          Collection
+        </span>
       </div>
+      <h2 className="text-xl mb-6" style={{ fontFamily: 'var(--font-serif)', color: 'var(--editorial-ink)' }}>Public Snippets</h2>
       
       <PublicSnippetList snippets={profile.snippets} />
     </div>
