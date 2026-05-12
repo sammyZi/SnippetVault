@@ -60,33 +60,33 @@ export function UserMenu({ profile, email }: UserMenuProps) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-neutral-100 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+          <button className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-[var(--editorial-bg-alt)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--editorial-accent)] focus:ring-offset-2" style={{ borderColor: 'var(--editorial-rule)' }}>
             {profile?.avatar_url ? (
               <img
                 src={profile.avatar_url}
                 alt={displayName}
-                className="w-8 h-8 rounded-full object-cover border border-neutral-200"
+                className="w-8 h-8 rounded-full object-cover border border-[var(--editorial-rule)]"
               />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-primary-100 border border-primary-200 flex items-center justify-center text-sm font-bold text-primary-700">
+              <div className="w-8 h-8 rounded-full border border-[var(--editorial-rule)] flex items-center justify-center text-sm font-bold" style={{ backgroundColor: 'var(--editorial-bg-alt)', color: 'var(--editorial-ink)' }}>
                 {initial}
               </div>
             )}
             <div className="hidden sm:flex items-center gap-1.5">
-              <span className="text-sm font-medium text-neutral-700">
+              <span className="text-sm font-medium" style={{ color: 'var(--editorial-ink)' }}>
                 {displayName}
               </span>
-              <ChevronDown className="w-4 h-4 text-neutral-400" />
+              <ChevronDown className="w-4 h-4" style={{ color: 'var(--editorial-muted)' }} />
             </div>
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuContent align="end" className="w-56 rounded-sm border-[var(--editorial-rule)]" style={{ backgroundColor: 'var(--editorial-bg)' }}>
           <DropdownMenuLabel>
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium text-neutral-900">
+              <p className="text-sm font-medium" style={{ color: 'var(--editorial-ink)' }}>
                 {displayName}
               </p>
-              <p className="text-xs text-neutral-500">{email}</p>
+              <p className="text-xs" style={{ color: 'var(--editorial-muted)' }}>{email}</p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -101,7 +101,7 @@ export function UserMenu({ profile, email }: UserMenuProps) {
           )}
           <DropdownMenuItem 
             onClick={() => setShowLogoutConfirm(true)}
-            className="text-red-600 focus:text-red-600 focus:bg-red-50"
+            className="text-[var(--editorial-accent)] focus:text-[var(--editorial-accent)]"
           >
             <LogOut className="mr-2 h-4 w-4" />
             <span>Sign out</span>
@@ -110,21 +110,27 @@ export function UserMenu({ profile, email }: UserMenuProps) {
       </DropdownMenu>
 
       <Dialog open={showLogoutConfirm} onOpenChange={setShowLogoutConfirm}>
-        <DialogContent className="sm:max-w-[400px]">
+        <DialogContent className="sm:max-w-[400px] rounded-sm border-[var(--editorial-rule)]" style={{ backgroundColor: 'var(--editorial-bg)' }}>
           <DialogHeader>
-            <DialogTitle>Sign out</DialogTitle>
-            <DialogDescription>
+            <DialogTitle style={{ fontFamily: 'var(--font-serif)', color: 'var(--editorial-ink)' }}>Sign out</DialogTitle>
+            <DialogDescription style={{ color: 'var(--editorial-muted)' }}>
               Are you sure you want to sign out of your account?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2 sm:gap-0">
-            <Button variant="outline" onClick={() => setShowLogoutConfirm(false)}>
+            <Button variant="outline" onClick={() => setShowLogoutConfirm(false)} className="rounded-full border-[var(--editorial-rule)]">
               Cancel
             </Button>
-            <Button variant="destructive" onClick={handleLogout}>
-              <LogOut className="w-4 h-4 mr-2" />
-              Sign out
-            </Button>
+            <button
+              onClick={handleLogout}
+              className="h-10 px-5 text-sm font-semibold rounded-full transition-all hover:scale-[1.02] active:scale-[0.98]"
+              style={{ backgroundColor: 'var(--editorial-accent)', color: 'var(--editorial-bg)' }}
+            >
+              <span className="flex items-center gap-2">
+                <LogOut className="w-4 h-4" />
+                Sign out
+              </span>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

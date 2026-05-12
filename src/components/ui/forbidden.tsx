@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
 import { ShieldAlert, LogIn, Home } from 'lucide-react'
 
 interface ForbiddenProps {
@@ -12,37 +11,43 @@ export function Forbidden({
   showLoginButton = true 
 }: ForbiddenProps) {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-red-50 via-pink-50 to-purple-50 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-red-300 rounded-full mix-blend-multiply filter blur-xl animate-blob" />
-        <div className="absolute top-40 right-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000" />
-        <div className="absolute bottom-20 left-40 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000" />
-      </div>
-      
-      <div className="text-center max-w-md relative z-10">
-        <div className="w-24 h-24 bg-gradient-to-br from-red-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-pulse">
-          <ShieldAlert className="w-12 h-12 text-white" />
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: 'var(--editorial-bg)' }}>
+      <div className="text-center max-w-md">
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <div className="w-6 h-px" style={{ backgroundColor: 'var(--editorial-accent)' }} />
+          <span className="text-[10px] tracking-[0.25em] uppercase font-semibold" style={{ color: 'var(--editorial-accent)' }}>
+            Access Denied
+          </span>
+          <div className="w-6 h-px" style={{ backgroundColor: 'var(--editorial-accent)' }} />
         </div>
-        <h1 className="text-7xl font-bold mb-4 bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">403</h1>
-        <h2 className="text-2xl font-semibold mb-3 text-neutral-800">Access Denied</h2>
-        <p className="text-neutral-600 mb-8 leading-relaxed">
+        
+        <div className="w-16 h-16 rounded-full border-2 border-[var(--editorial-accent)]/30 flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: 'rgba(192,69,42,0.06)' }}>
+          <ShieldAlert className="w-8 h-8" style={{ color: 'var(--editorial-accent)' }} />
+        </div>
+        
+        <h1 className="text-7xl mb-3" style={{ fontFamily: 'var(--font-serif)', color: 'var(--editorial-ink)' }}>403</h1>
+        <h2 className="text-lg font-medium mb-3" style={{ color: 'var(--editorial-ink)' }}>Access Denied</h2>
+        <p className="text-sm leading-relaxed mb-8" style={{ color: 'var(--editorial-muted)' }}>
           {message}
         </p>
         <div className="flex gap-3 justify-center flex-wrap">
           {showLoginButton && (
-            <Link href="/login">
-              <Button className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white shadow-lg hover:shadow-xl transition-all duration-200">
-                <LogIn className="w-4 h-4 mr-2" />
-                Log In
-              </Button>
+            <Link
+              href="/login"
+              className="h-10 px-5 flex items-center gap-2 text-sm font-semibold rounded-full transition-all hover:scale-[1.02] active:scale-[0.98]"
+              style={{ backgroundColor: 'var(--editorial-ink)', color: 'var(--editorial-bg)' }}
+            >
+              <LogIn className="w-4 h-4" />
+              Log In
             </Link>
           )}
-          <Link href="/dashboard">
-            <Button variant="outline" className="border-2 hover:bg-white/80">
-              <Home className="w-4 h-4 mr-2" />
-              Go to Dashboard
-            </Button>
+          <Link
+            href="/dashboard"
+            className="h-10 px-5 flex items-center gap-2 text-sm font-medium rounded-full border border-[var(--editorial-rule)] transition-all hover:bg-[var(--editorial-bg-alt)]"
+            style={{ color: 'var(--editorial-ink)' }}
+          >
+            <Home className="w-4 h-4" />
+            Dashboard
           </Link>
         </div>
       </div>

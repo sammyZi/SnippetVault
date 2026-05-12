@@ -2,9 +2,9 @@ import { Loader2 } from 'lucide-react'
 
 export default function Loading() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
-      <Loader2 className="w-8 h-8 text-primary-600 animate-spin" />
-      <p className="text-neutral-500 font-medium animate-pulse">Loading profile...</p>
+    <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4" style={{ backgroundColor: 'var(--editorial-bg)' }}>
+      <Loader2 className="w-6 h-6 animate-spin" style={{ color: 'var(--editorial-accent)' }} />
+      <p className="text-sm font-medium animate-pulse" style={{ color: 'var(--editorial-muted)' }}>Loading profile...</p>
     </div>
   )
 }

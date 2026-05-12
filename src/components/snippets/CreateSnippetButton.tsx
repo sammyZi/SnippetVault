@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -53,22 +52,26 @@ export function CreateSnippetButton() {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)} size="lg">
-        <Plus className="mr-2 h-5 w-5" />
+      <button
+        onClick={() => setIsOpen(true)}
+        className="h-10 px-5 flex items-center gap-2 text-sm font-semibold rounded-full transition-all hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+        style={{ backgroundColor: 'var(--editorial-ink)', color: 'var(--editorial-bg)' }}
+      >
+        <Plus className="h-4 w-4" />
         Create Snippet
-      </Button>
+      </button>
 
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar rounded-sm border-[var(--editorial-rule)]" style={{ backgroundColor: 'var(--editorial-bg)' }}>
           <DialogHeader>
-            <DialogTitle>Create New Snippet</DialogTitle>
-            <DialogDescription>
+            <DialogTitle style={{ fontFamily: 'var(--font-serif)', color: 'var(--editorial-ink)' }}>Create New Snippet</DialogTitle>
+            <DialogDescription style={{ color: 'var(--editorial-muted)' }}>
               Add a new code snippet to your collection
             </DialogDescription>
           </DialogHeader>
           
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md text-sm">
+            <div className="p-3 rounded-sm border text-sm" style={{ backgroundColor: 'rgba(192,69,42,0.06)', borderColor: 'rgba(192,69,42,0.2)', color: 'var(--editorial-accent)' }}>
               <p className="font-medium">Error creating snippet</p>
               <p className="mt-1">{error}</p>
             </div>

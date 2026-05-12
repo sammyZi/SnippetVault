@@ -18,9 +18,10 @@ export function PublicSnippetList({ snippets }: PublicSnippetListProps) {
     return (
       <div className="text-center py-16 px-4">
         <div className="max-w-md mx-auto">
-          <div className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 rounded-full border-2 border-[var(--editorial-rule)] flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'var(--editorial-bg-alt)' }}>
             <svg
-              className="w-8 h-8 text-neutral-400"
+              className="w-8 h-8"
+              style={{ color: 'var(--editorial-muted)' }}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -33,11 +34,11 @@ export function PublicSnippetList({ snippets }: PublicSnippetListProps) {
               />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-neutral-900 mb-2">
+          <h3 className="text-lg font-medium mb-2" style={{ fontFamily: 'var(--font-serif)', color: 'var(--editorial-ink)' }}>
             No public snippets yet
           </h3>
-          <p className="text-neutral-500 text-sm">
-            This user hasn't shared any public snippets.
+          <p className="text-sm" style={{ color: 'var(--editorial-muted)' }}>
+            This user hasn&apos;t shared any public snippets.
           </p>
         </div>
       </div>

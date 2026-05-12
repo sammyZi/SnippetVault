@@ -25,19 +25,21 @@ export function SearchBar() {
 
   return (
     <div className="relative">
-      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-400" />
+      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4" style={{ color: 'var(--editorial-muted)' }} />
       <Input
         type="text"
         placeholder="Search snippets by title or description..."
         value={localQuery}
         onChange={(e) => setLocalQuery(e.target.value)}
-        className="pl-10 pr-9"
+        className="pl-10 pr-9 h-10 rounded-sm border-[var(--editorial-rule)] focus:border-[var(--editorial-ink)] text-sm"
+        style={{ backgroundColor: 'var(--editorial-bg-alt)', color: 'var(--editorial-ink)' }}
       />
       {localQuery && (
         <button
           type="button"
           onClick={handleClear}
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-neutral-600 transition-colors"
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 transition-colors"
+          style={{ color: 'var(--editorial-muted)' }}
           aria-label="Clear search"
         >
           <X className="h-4 w-4" />
