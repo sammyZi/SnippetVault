@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { PublicProfile } from '@/components/profile/PublicProfile'
 import { Database } from '@/lib/database.types'
+import { Braces } from 'lucide-react'
+import Link from 'next/link'
 
 type Profile = Database['public']['Tables']['profiles']['Row']
 type Snippet = Database['public']['Tables']['snippets']['Row']
@@ -59,8 +61,27 @@ export default async function PublicProfilePage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 py-8">
-      <div className="container mx-auto px-4 max-w-6xl">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--editorial-bg)' }}>
+      {/* Top bar */}
+      <div className="w-full border-b border-[var(--editorial-rule)]" style={{ backgroundColor: 'var(--editorial-bg-alt)' }}>
+        <div className="max-w-6xl mx-auto px-4 flex items-center h-8">
+          <span className="text-[10px] tracking-[0.2em] uppercase font-medium" style={{ color: 'var(--editorial-muted)' }}>
+            SV / 2026 · PROFILE · @{username}
+          </span>
+        </div>
+      </div>
+      {/* Nav */}
+      <nav className="w-full border-b border-[var(--editorial-rule)]">
+        <div className="max-w-6xl mx-auto px-4 flex items-center h-14">
+          <Link href="/" className="flex items-center gap-2">
+            <Braces className="w-4 h-4" style={{ color: 'var(--editorial-accent)' }} strokeWidth={2.5} />
+            <span className="text-lg" style={{ fontFamily: 'var(--font-serif)', color: 'var(--editorial-ink)' }}>
+              SnippetVault
+            </span>
+          </Link>
+        </div>
+      </nav>
+      <div className="max-w-6xl mx-auto px-4 py-8">
         <PublicProfile profile={profileWithSnippets} />
       </div>
     </div>
