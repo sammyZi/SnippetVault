@@ -317,17 +317,28 @@ export default async function Home() {
 
       {/* ── Footer ── */}
       <footer className="w-full" style={{ backgroundColor: 'var(--editorial-bg)' }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <Braces className="w-4 h-4" style={{ color: 'var(--editorial-accent)' }} />
-            <span className="text-sm font-serif" style={{ color: 'var(--editorial-ink)', fontFamily: 'var(--font-serif)' }}>
-              SnippetVault
-            </span>
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-10 flex flex-col md:flex-row items-start justify-between gap-8 md:gap-4">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-2">
+              <Braces className="w-4 h-4" style={{ color: 'var(--editorial-accent)' }} />
+              <span className="text-sm font-serif" style={{ color: 'var(--editorial-ink)', fontFamily: 'var(--font-serif)' }}>
+                SnippetVault
+              </span>
+            </div>
+            <div className="flex items-center gap-6">
+              <span className="text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--editorial-muted)' }}>
+                VOL. 01 · ISSUE Nº 01 · MADE ON EARTH
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-6">
-            <span className="text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--editorial-muted)' }}>
-              VOL. 01 · ISSUE Nº 01 · MADE ON EARTH
-            </span>
+          <div>
+            <h4 className="font-bold text-lg mb-4 font-sans" style={{ color: 'var(--editorial-ink)', fontFamily: 'var(--font-sans)' }}>Connect</h4>
+            <ul className="space-y-3 text-sage-400 text-sm font-sans" style={{ color: 'var(--editorial-muted)', fontFamily: 'var(--font-sans)' }}>
+              <li><a href="https://github.com/sammyZi" target="_blank" rel="noopener noreferrer" className="hover:text-black transition-colors" style={{ color: 'inherit' }}>GitHub</a></li>
+              <li><a href="https://www.linkedin.com/in/samarth-bhinge/" target="_blank" rel="noopener noreferrer" className="hover:text-black transition-colors" style={{ color: 'inherit' }}>LinkedIn</a></li>
+              <li><a href="https://www.instagram.com/sammyi_57/" target="_blank" rel="noopener noreferrer" className="hover:text-black transition-colors" style={{ color: 'inherit' }}>Instagram</a></li>
+              <li><a href="mailto:bhingesmaerth@gmail.com" className="hover:text-black transition-colors" style={{ color: 'inherit' }}>Email Me</a></li>
+            </ul>
           </div>
         </div>
       </footer>
